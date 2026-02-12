@@ -1,0 +1,20 @@
+{
+  "name": "ByteFood",
+  "short_name": "ByteFood",
+  "icons": [
+    {
+      "src": "/src/assets/ikonka.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/src/assets/ikonka.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#FF6600",
+  "background_color": "#ffffff",
+  "display": "standalone"
+}
+

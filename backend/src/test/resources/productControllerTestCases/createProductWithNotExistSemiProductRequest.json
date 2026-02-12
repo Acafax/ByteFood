@@ -1,0 +1,24 @@
+{
+  "name": "testBurger",
+  "category": "BURGER",
+  "price": 19.95,
+  "productsSemiProducts": [
+    {
+      "semiProductId": 4,
+      "quantity": 2
+    },
+    {
+      "semiProductId": 100000000000,
+      "quantity": 2
+    },
+    {
+      "semiProductId": 15,
+      "quantity": 1
+    },
+    {
+      "semiProductId": 1,
+      "quantity": 1
+    }
+  ]
+}
+
