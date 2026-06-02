@@ -1,0 +1,132 @@
+{
+  "title": "App - Traces (Jaeger)",
+  "description": "Dashboard dedykowany analizie rozproszonego śledzenia (Distributed Tracing). Służy do znajdowania wąskich gardeł, analizy czasu trwania (latency) oraz badania ścieżki wywołań (Spans) dla konkretnych requestów.",
+  "tags": [
+    "spring-boot",
+    "jaeger",
+    "tracing",
+    "opentelemetry"
+  ],
+  "timezone": "browser",
+  "refresh": false,
+  "schemaVersion": 38,
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": false,
+          "text": "backend",
+          "value": "backend"
+        },
+        "datasource": {
+          "type": "jaeger",
+          "uid": "jaeger"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "service",
+        "options": [],
+        "query": "{\"query\":\"services\"}",
+        "refresh": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "jaeger",
+          "uid": "jaeger"
+        },
+        "hide": 0,
+        "includeAll": true,
+        "multi": false,
+        "name": "operation",
+        "options": [],
+        "query": "{\"query\":\"operations\",\"service\":\"$service\"}",
+        "refresh": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "",
+          "value": ""
+        },
+        "hide": 0,
+        "label": "Min Duration (np. 1s, 500ms)",
+        "name": "minDuration",
+        "options": [
+          {
+            "selected": true,
+            "text": "",
+            "value": ""
+          }
+        ],
+        "query": "",
+        "skipUrlSync": false,
+        "type": "textbox"
+      }
+    ]
+  },
+  "panels": [
+    {
+      "type": "text",
+      "title": "Poradnik: Jak używać Tracingu",
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "options": {
+        "content": "### ️ Analiza Wąskich Gardeł (Bottlenecks)\n1. Wybierz swój **Service** z rozwijanej listy na górze.\n2. Jeśli szukasz wolnych requestów, wpisz wartość w **Min Duration** (np. `500ms` aby znaleźć zapytania dłuższe niż pół sekundy).\n3. Kliknij w dany **Trace ID** w tabeli poniżej, aby rozwinąć wykres kaskadowy (Waterfall) pokazujący wywołania baz danych (PostgreSQL), brokerów wiadomości (Kafka) i wewnętrznych funkcji.",
+        "mode": "markdown"
+      }
+    },
+    {
+      "type": "row",
+      "title": "1. Wyszukiwarka Śladów (Trace Search)",
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 3
+      }
+    },
+    {
+      "type": "traces",
+      "title": "Ostatnie Ślady (Traces) - Filtrowane po czasie i operacji",
+      "datasource": {
+        "type": "jaeger",
+        "uid": "jaeger"
+      },
+      "gridPos": {
+        "h": 16,
+        "w": 24,
+        "x": 0,
+        "y": 4
+      },
+      "targets": [
+        {
+          "queryType": "search",
+          "refId": "A",
+          "service": "$service",
+          "operation": "$operation",
+          "minDuration": "$minDuration",
+          "limit": 50
+        }
+      ],
+      "options": {
+        "showTraceId": true,
+        "showSpanCount": true,
+        "showDuration": true,
+        "showErrors": true,
+        "showServices": true
+      }
+    }
+  ]
+}

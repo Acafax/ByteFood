@@ -1,0 +1,199 @@
+{
+  "title": "App - Logs (Loki)",
+  "description": "Dashboard skupiony na logach z Lokiego. Wolumen logów, analiza błędów oraz korelacja z Jaegerem (TraceID).",
+  "tags": ["spring-boot", "loki", "logs"],
+  "timezone": "browser",
+  "refresh": "10s",
+  "schemaVersion": 38,
+  "templating": {
+    "list": [
+      {
+        "current": { "selected": false, "text": "All", "value": "$__all" },
+        "datasource": { "type": "loki", "uid": "loki" },
+        "hide": 0,
+        "includeAll": true,
+        "multi": true,
+        "name": "service",
+        "options": [],
+        "query": { "query": "label_values(app)", "refId": "StandardVariableQuery" },
+        "refresh": 1,
+        "type": "query"
+      },
+      {
+        "current": { "selected": false, "text": "All", "value": "$__all" },
+        "datasource": { "type": "loki", "uid": "loki" },
+        "hide": 0,
+        "includeAll": true,
+        "multi": true,
+        "name": "instance",
+        "options": [],
+        "query": { "query": "label_values({app=~\"$service\"}, host)", "refId": "StandardVariableQuery" },
+        "refresh": 1,
+        "type": "query"
+      },
+      {
+        "current": { "selected": false, "text": "", "value": "" },
+        "hide": 0,
+        "name": "search",
+        "options": [{ "selected": true, "text": "", "value": "" }],
+        "query": "",
+        "skipUrlSync": false,
+        "type": "textbox",
+        "label": "Szukaj w logach"
+      }
+    ]
+  },
+  "panels": [
+    {
+      "type": "text",
+      "title": "Zasady Retencji Logów (Loki)",
+      "gridPos": { "h": 3, "w": 24, "x": 0, "y": 0 },
+      "options": {
+        "content": "ℹ️ **Informacja:** Konfiguracja tej instancji Lokiego przewiduje **14-dniowy okres retencji** (`retention_period: 14d`). Oznacza to, że logi starsze niż 2 tygodnie są automatycznie usuwane w celu oszczędzania miejsca na dysku. Maksymalny czas wstecz dla zapytań to również 14 dni.",
+        "mode": "markdown"
+      }
+    },
+    {
+      "type": "row",
+      "title": "1. Overview - Log Volume",
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 3 }
+    },
+    {
+      "type": "timeseries",
+      "title": "Log Volume by Level (Liczba linii na sekundę)",
+      "datasource": { "type": "loki", "uid": "loki" },
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 4 },
+      "targets": [
+        {
+          "expr": "sum(rate({app=~\"$service\", host=~\"$instance\"} |= \"ERROR\" [$__auto]))",
+          "legendFormat": "ERROR",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(rate({app=~\"$service\", host=~\"$instance\"} |= \"WARN\" [$__auto]))",
+          "legendFormat": "WARN",
+          "refId": "B"
+        },
+        {
+          "expr": "sum(rate({app=~\"$service\", host=~\"$instance\"} |= \"INFO\" [$__auto]))",
+          "legendFormat": "INFO",
+          "refId": "C"
+        }
+      ],
+      "options": {
+        "legend": { "displayMode": "list", "placement": "bottom" }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "fillOpacity": 70,
+            "lineWidth": 1,
+            "stacking": { "group": "A", "mode": "normal" }
+          },
+          "color": { "mode": "fixed" },
+          "mappings": [],
+          "unit": "short"
+        },
+        "overrides": [
+          { "matcher": { "id": "byName", "options": "ERROR" }, "properties": [ { "id": "color", "value": { "fixedColor": "red", "mode": "fixed" } } ] },
+          { "matcher": { "id": "byName", "options": "WARN" }, "properties": [ { "id": "color", "value": { "fixedColor": "orange", "mode": "fixed" } } ] },
+          { "matcher": { "id": "byName", "options": "INFO" }, "properties": [ { "id": "color", "value": { "fixedColor": "green", "mode": "fixed" } } ] }
+        ]
+      }
+    },
+    {
+      "type": "row",
+      "title": "2. Error Analysis",
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 12 }
+    },
+    {
+      "type": "timeseries",
+      "title": "Errors by Instance",
+      "datasource": { "type": "loki", "uid": "loki" },
+      "gridPos": { "h": 8, "w": 6, "x": 0, "y": 13 },
+      "targets": [
+        {
+          "expr": "sum by (host) (rate({app=~\"$service\", host=~\"$instance\"} |= \"ERROR\" [$__auto]))",
+          "legendFormat": "{{host}}",
+          "refId": "A"
+        }
+      ],
+      "options": {
+        "legend": { "displayMode": "table", "placement": "bottom" }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": { "fillOpacity": 40, "lineWidth": 2 },
+          "unit": "short"
+        }
+      }
+    },
+    {
+      "type": "table",
+      "title": "Top Errors by Logger Class",
+      "datasource": { "type": "loki", "uid": "loki" },
+      "gridPos": { "h": 8, "w": 9, "x": 6, "y": 13 },
+      "targets": [
+        {
+          "expr": "sum by (logger) (count_over_time({app=~\"$service\", host=~\"$instance\"} |= \"ERROR\" | pattern `<level> <logger> - <msg>` [$__auto]))",
+          "format": "table",
+          "instant": true,
+          "refId": "A"
+        }
+      ],
+      "options": {
+        "showHeader": true,
+        "sortBy": [ { "desc": true, "displayName": "Value" } ]
+      },
+      "fieldConfig": {
+        "defaults": { "color": { "mode": "thresholds" } },
+        "overrides": [
+          { "matcher": { "id": "byName", "options": "Value" }, "properties": [ { "id": "displayName", "value": "Liczba błędów" } ] }
+        ]
+      }
+    },
+    {
+      "type": "piechart",
+      "title": "Error Distribution by Exception Type",
+      "datasource": { "type": "loki", "uid": "loki" },
+      "gridPos": { "h": 8, "w": 9, "x": 15, "y": 13 },
+      "targets": [
+        {
+          "expr": "sum by (exception) (count_over_time({app=~\"$service\", host=~\"$instance\"} |= \"ERROR\" |~ \"(?P<exception>[a-zA-Z0-9.]+Exception)\" [$__auto]))",
+          "format": "table",
+          "instant": true,
+          "refId": "A"
+        }
+      ],
+      "options": {
+        "pieType": "donut",
+        "tooltip": { "mode": "single", "sort": "none" },
+        "legend": { "displayMode": "table", "placement": "right" }
+      }
+    },
+    {
+      "type": "row",
+      "title": "3. Correlation (Logs & Traces)",
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 21 }
+    },
+    {
+      "type": "logs",
+      "title": "Application Logs Stream (Kliknij log, aby znaleźć TraceID)",
+      "datasource": { "type": "loki", "uid": "loki" },
+      "gridPos": { "h": 15, "w": 24, "x": 0, "y": 22 },
+      "targets": [
+        {
+          "expr": "{app=~\"$service\", host=~\"$instance\"} |= \"$search\"",
+          "refId": "A"
+        }
+      ],
+      "options": {
+        "showLabels": true,
+        "showTime": true,
+        "wrapLogMessage": true,
+        "sortOrder": "Descending",
+        "enableLogDetails": true
+      }
+    }
+  ]
+}

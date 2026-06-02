@@ -1,0 +1,282 @@
+{
+  "title": "App - Overview (Metrics, Logs, Traces)",
+  "description": "Owner: Team Backend. Główny dashboard przeglądowy koreluący metryki (Prometheus), Logi (Loki) i Trace'y (Jaeger). Zapewnia widok z lotu ptaka na zdrowie aplikacji Spring Boot.",
+  "tags": ["spring-boot", "overview", "java"],
+  "timezone": "browser",
+  "refresh": "10s",
+  "schemaVersion": 38,
+  "templating": {
+    "list": [
+      {
+        "current": { "selected": false, "text": "All", "value": "$__all" },
+        "datasource": { "type": "prometheus", "uid": "prometheus" },
+        "hide": 0,
+        "includeAll": true,
+        "multi": true,
+        "name": "service",
+        "options": [],
+        "query": { "query": "label_values(up, job)", "refId": "StandardVariableQuery" },
+        "refresh": 1,
+        "type": "query"
+      },
+      {
+        "current": { "selected": false, "text": "All", "value": "$__all" },
+        "datasource": { "type": "prometheus", "uid": "prometheus" },
+        "hide": 0,
+        "includeAll": true,
+        "multi": true,
+        "name": "instance",
+        "options": [],
+        "query": { "query": "label_values(up{job=~\"$service\"}, instance)", "refId": "StandardVariableQuery" },
+        "refresh": 1,
+        "type": "query"
+      }
+    ]
+  },
+  "panels": [
+    {
+      "type": "text",
+      "title": "Wskazówki operacyjne",
+      "gridPos": { "h": 3, "w": 24, "x": 0, "y": 0 },
+      "options": {
+        "content": "### 🚀 System Health Overview\n**Jak czytać ten dashboard:** \n1. **Zielony** = OK, **Żółty** = Warning, **Czerwony** = Critical. Puste panele błędów to dobry znak!\n2. W panelu logów na dole, rozwiń dowolny log z błędem, aby zobaczyć pole `TraceID` i kliknij w nie, aby przenieść się do **Jaegera** w celu analizy End-to-End.\n3. Użyj zmiennych `$service` i `$instance` na górze, aby filtrować widok.",
+        "mode": "markdown"
+      }
+    },
+    {
+      "type": "row",
+      "title": "1. Global Status & KPI",
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 3 }
+    },
+    {
+      "type": "stat",
+      "title": "Active Instances",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 4, "w": 3, "x": 0, "y": 4 },
+      "targets": [
+        { "expr": "sum(up{job=~\"$service\", instance=~\"$instance\"})", "refId": "A" }
+      ],
+      "options": { "colorMode": "value", "graphMode": "none", "justifyMode": "auto" },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [ { "options": { "0": { "color": "red", "index": 0, "text": "DOWN" } }, "type": "value" } ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [ { "color": "red", "value": null }, { "color": "orange", "value": 1 }, { "color": "green", "value": 3 } ]
+          }
+        }
+      }
+    },
+    {
+      "type": "stat",
+      "title": "Uptime",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 4, "w": 3, "x": 3, "y": 4 },
+      "targets": [
+        { "expr": "max(process_uptime_seconds{job=~\"$service\", instance=~\"$instance\"})", "refId": "A" }
+      ],
+      "options": { "colorMode": "value", "graphMode": "none" },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [ { "color": "green", "value": null } ]
+          }
+        }
+      }
+    },
+    {
+      "type": "stat",
+      "title": "Apdex (T=0.5s)",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 4, "w": 3, "x": 6, "y": 4 },
+      "targets": [
+        { "expr": "(sum(rate(http_server_requests_seconds_bucket{le=\"0.5\", job=~\"$service\", instance=~\"$instance\"}[5m])) + sum(rate(http_server_requests_seconds_bucket{le=\"2.0\", job=~\"$service\", instance=~\"$instance\"}[5m]))) / 2 / sum(rate(http_server_requests_seconds_count{job=~\"$service\", instance=~\"$instance\"}[5m]))", "refId": "A" }
+      ],
+      "options": { "colorMode": "value", "graphMode": "area" },
+      "fieldConfig": {
+        "defaults": {
+          "max": 1,
+          "min": 0,
+          "decimals": 2,
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [ { "color": "red", "value": null }, { "color": "orange", "value": 0.7 }, { "color": "green", "value": 0.9 } ]
+          }
+        }
+      }
+    },
+    {
+      "type": "stat",
+      "title": "Req Rate / s",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 4, "w": 3, "x": 9, "y": 4 },
+      "targets": [
+        { "expr": "sum(rate(http_server_requests_seconds_count{job=~\"$service\", instance=~\"$instance\"}[5m]))", "refId": "A" }
+      ],
+      "options": { "colorMode": "value", "graphMode": "area" },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "decimals": 2,
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [ { "color": "green", "value": null } ]
+          }
+        }
+      }
+    },
+    {
+      "type": "stat",
+      "title": "Error Rate (5xx)",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 4, "w": 4, "x": 12, "y": 4 },
+      "targets": [
+        { "expr": "sum(rate(http_server_requests_seconds_count{job=~\"$service\", instance=~\"$instance\", status=~\"5..\"}[5m])) / sum(rate(http_server_requests_seconds_count{job=~\"$service\", instance=~\"$instance\"}[5m])) * 100", "refId": "A" }
+      ],
+      "options": { "colorMode": "background", "graphMode": "none" },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "decimals": 2,
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [ { "color": "green", "value": null }, { "color": "orange", "value": 1 }, { "color": "red", "value": 5 } ]
+          }
+        }
+      }
+    },
+    {
+      "type": "stat",
+      "title": "Avg Latency",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 4, "w": 4, "x": 16, "y": 4 },
+      "targets": [
+        { "expr": "sum(rate(http_server_requests_seconds_sum{job=~\"$service\", instance=~\"$instance\"}[5m])) / sum(rate(http_server_requests_seconds_count{job=~\"$service\", instance=~\"$instance\"}[5m]))", "refId": "A" }
+      ],
+      "options": { "colorMode": "value", "graphMode": "area" },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "decimals": 3,
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [ { "color": "green", "value": null }, { "color": "orange", "value": 0.5 }, { "color": "red", "value": 1.5 } ]
+          }
+        }
+      }
+    },
+    {
+      "type": "stat",
+      "title": "Latency P95",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 4, "w": 4, "x": 20, "y": 4 },
+      "targets": [
+        { "expr": "histogram_quantile(0.95, sum(rate(http_server_requests_seconds_bucket{job=~\"$service\", instance=~\"$instance\"}[5m])) by (le))", "refId": "A" }
+      ],
+      "options": { "colorMode": "value", "graphMode": "area" },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "decimals": 3,
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [ { "color": "green", "value": null }, { "color": "orange", "value": 0.5 }, { "color": "red", "value": 1.5 } ]
+          }
+        }
+      }
+    },
+    {
+      "type": "row",
+      "title": "2. Traffic & Performance Details",
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 8 }
+    },
+    {
+      "type": "timeseries",
+      "title": "HTTP Requests per Endpoint",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 9 },
+      "targets": [
+        {
+          "expr": "sum(rate(http_server_requests_seconds_count{job=~\"$service\", instance=~\"$instance\"}[2m])) by (uri)",
+          "legendFormat": "{{uri}}",
+          "refId": "A"
+        }
+      ],
+      "options": {
+        "legend": { "displayMode": "table", "placement": "bottom", "calcs": ["mean", "max"] },
+        "tooltip": { "mode": "multi" }
+      },
+      "fieldConfig": { "defaults": { "unit": "reqps" } }
+    },
+    {
+      "type": "timeseries",
+      "title": "Avg Latency by URI",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 9 },
+      "targets": [
+        {
+          "expr": "sum(rate(http_server_requests_seconds_sum{job=~\"$service\", instance=~\"$instance\"}[2m])) by (uri) / sum(rate(http_server_requests_seconds_count{job=~\"$service\", instance=~\"$instance\"}[2m])) by (uri)",
+          "legendFormat": "{{uri}}",
+          "refId": "A"
+        }
+      ],
+      "options": {
+        "legend": { "displayMode": "table", "placement": "bottom", "calcs": ["mean", "max"] },
+        "tooltip": { "mode": "multi" }
+      },
+      "fieldConfig": { "defaults": { "unit": "s" } }
+    },
+    {
+      "type": "timeseries",
+      "title": "JVM Heap Memory Usage",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 9 },
+      "targets": [
+        {
+          "expr": "sum(jvm_memory_used_bytes{job=~\"$service\", instance=~\"$instance\", area=\"heap\"}) by (instance)",
+          "legendFormat": "Used Heap - {{instance}}",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(jvm_memory_max_bytes{job=~\"$service\", instance=~\"$instance\", area=\"heap\"}) by (instance)",
+          "legendFormat": "Max Heap - {{instance}}",
+          "refId": "B"
+        }
+      ],
+      "options": {
+        "legend": { "displayMode": "list", "placement": "bottom" }
+      },
+      "fieldConfig": { "defaults": { "unit": "bytes" } }
+    },
+    {
+      "type": "row",
+      "title": "3. Logs & Traces Correlation",
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 17 }
+    },
+    {
+      "type": "logs",
+      "title": "Recent Application Errors (Loki)",
+      "datasource": { "type": "loki", "uid": "loki" },
+      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 18 },
+      "targets": [
+        {
+          "expr": "{app=~\".*\"} |= \"ERROR\"",
+          "refId": "A"
+        }
+      ],
+      "options": {
+        "showLabels": true,
+        "showTime": true,
+        "wrapLogMessage": true,
+        "sortOrder": "Descending"
+      }
+    }
+  ]
+}

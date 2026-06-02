@@ -1,0 +1,15 @@
+{
+  "name": "Cross Tenant Burger",
+  "category": "BURGER",
+  "price": 19.95,
+  "productsSemiProducts": [
+    {
+      "semiProductId": 1,
+      "quantity": 1
+    },
+    {
+      "semiProductId": 4,
+      "quantity": 2
+    }
+  ]
+}

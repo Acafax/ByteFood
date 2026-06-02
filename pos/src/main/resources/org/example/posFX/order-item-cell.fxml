@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+
+<HBox fx:id="cellContent" styleClass="order-item-cell"
+      xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.posFX.OrderItemCellController">
+
+    <VBox fx:id="itemContainer" styleClass="item-info" HBox.hgrow="ALWAYS">
+<!--        <Label fx:id="nameLabel" styleClass="item-name" text="[Nazwa Produktu]" />-->
+<!--        <Label fx:id="detailsLabel" styleClass="item-details" text="Ilość: 1 | 0.00 zł" />-->
+<!--        <Label fx:id="modificationsLabel" styleClass="item-modifications"-->
+<!--               managed="false" visible="false" wrapText="true" />-->
+    </VBox>
+
+    <Button fx:id="modifyBtn" styleClass="btn-modify"
+            onAction="#onModifyClicked" text="✏️" />
+    <Button fx:id="removeBtn" styleClass="btn-remove"
+            onAction="#onRemoveClicked" text="❌" />
+</HBox>
+

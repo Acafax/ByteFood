@@ -1,0 +1,23 @@
+spring:
+  kafka:
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+
+    producer:
+      #  restaurant ID
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      # order DTO object with data serialized to bytes
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      properties:
+        spring.json.trusted.packages: "org.example.dtos.order"
+
+    consumer:
+      group-id: inventory-management-group
+
+      auto-offset-reset: earliest
+
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+      properties:
+        spring.json.trusted.packages: "*"

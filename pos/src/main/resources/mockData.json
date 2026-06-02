@@ -1,0 +1,38 @@
+[
+  {
+  "position": 1,
+  "name": "Big-Burger",
+  "quantity": 2,
+  "mods": [
+    {
+      "pozycja": 1,
+      "name": "tomato",
+      "product": 2,
+      "quantity": 2
+    }
+  ],
+  "product": 2
+  },
+  {
+    "position": 2,
+    "name": "Chicken-Burger",
+    "quantity": 1,
+    "mods": [],
+    "product": 1
+  },
+  {
+    "position": 5,
+    "name": "coca-cola",
+    "quantity": 1,
+    "mods": [],
+    "product": 1
+  },
+  {
+    "position": 7,
+    "name": "frytki-male",
+    "quantity": 1,
+    "mods": [],
+    "product": 1
+  }
+]
+

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="editPanel" styleClass="edit-panel"
+      xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.posFX.EditPanelController">
+
+    <children>
+        <!-- Nagłówek -->
+        <VBox styleClass="edit-header">
+            <children>
+                <Label styleClass="edit-title" text="Personalizacja Produktu" />
+                <Label fx:id="productNameLabel" styleClass="edit-product-name" text="[Nazwa Produktu]" />
+            </children>
+        </VBox>
+
+        <Separator />
+
+        <!-- Sekcja dodatków -->
+        <FlowPane fx:id="modificationPanel" styleClass="edit-addons-container"/>
+
+        <!-- Informacje o modyfikacjach -->
+        <Label fx:id="infoLabel" styleClass="edit-info-label"
+               text="Brak modyfikacji" wrapText="true" maxWidth="660" />
+
+
+        <!-- Przyciski akcji -->
+        <HBox styleClass="edit-actions-container" VBox.vgrow="ALWAYS">
+            <children>
+                <Button fx:id="saveButton" styleClass="btn-edit-save"
+                        onAction="#onSaveClicked" text="✅ Zapisz" />
+                <Button fx:id="cancelButton" styleClass="btn-edit-cancel"
+                        onAction="#onCancelClicked" text="Anuluj" />
+            </children>
+        </HBox>
+    </children>
+</VBox>

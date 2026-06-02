@@ -1,0 +1,768 @@
+.product-card {
+    -fx-background-color: white;
+    -fx-border-color: #bdc3c7;
+    -fx-border-width: 1;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);
+}
+
+/* Efekt najechania myszką (zastępuje kod Java z MenuItemCardController) */
+.product-card:hover {
+    -fx-background-color: #ecf0f1;
+    -fx-border-color: #3498db;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 8, 0, 0, 3);
+}
+
+
+/*====================  ORDER-ITEM-CELL =========================================*/
+
+
+/* ===== KOMÓRKA ZAMÓWIENIA (ORDER ITEM CELL) ===== */
+.order-item-cell {
+    -fx-alignment: center-left;
+    -fx-spacing: 12;
+    -fx-padding: 8;
+}
+
+/* Kontener z informacjami o produkcie */
+.item-info {
+    -fx-spacing: 4;
+}
+
+/* Nazwa produktu */
+.item-name {
+    -fx-font-family: "Arial";
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #e0e6ed;
+}
+
+/* Szczegóły (ilość i cena) */
+.item-details {
+    -fx-font-family: "Arial";
+    -fx-font-size: 13px;
+    -fx-text-fill: #b0b8c3;
+}
+
+/* Modyfikacje (italic, niebieski) */
+.item-modifications {
+    -fx-font-family: "Arial";
+    -fx-font-size: 11px;
+    -fx-font-style: italic;
+    -fx-text-fill: #5dade2;
+    -fx-padding: 6 0 0 0; /* top margin zastąpiony paddingiem */
+}
+
+/* ===== PRZYCISKI AKCJI ===== */
+/* Przycisk "Modyfikuj" (pomarańczowy) */
+.btn-modify {
+    -fx-background-color: #f39c12;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-pref-width: 32;
+    -fx-pref-height: 32;
+    -fx-cursor: hand;
+    -fx-background-radius: 5;
+}
+
+.btn-modify:hover {
+    -fx-background-color: #e67e22;
+}
+
+.btn-modify:pressed {
+    -fx-background-color: #d68910;
+}
+
+/* Przycisk "Usuń" (czerwony) */
+.btn-remove {
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-pref-width: 32;
+    -fx-pref-height: 32;
+    -fx-cursor: hand;
+    -fx-background-radius: 5;
+}
+
+.btn-remove:hover {
+    -fx-background-color: #c0392b;
+}
+
+.btn-remove:pressed {
+    -fx-background-color: #a93226;
+}
+/* ========================================
+   MENU ITEM CARD
+   ======================================== */
+
+/* Główny kontener karty produktu - kafelek */
+.menu-card {
+    -fx-pref-height: 340;
+    -fx-pref-width: 250;
+    -fx-spacing: 0;
+    -fx-padding: 0;
+    -fx-background-color: #2d3548;
+    -fx-border-color: #3d4556;
+    -fx-border-width: 1;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 0, 2);
+}
+
+/* Efekt hover dla całej karty */
+.menu-card:hover {
+    -fx-border-color: #5a9fd4;
+    -fx-effect: dropshadow(three-pass-box, rgba(90,159,212,0.4), 12, 0, 0, 4);
+    -fx-cursor: hand;
+    -fx-translate-y: -3;
+}
+
+/* Zdjęcie produktu - górna połowa kafelka */
+.menu-image {
+    -fx-background-color: #1f2430;
+    -fx-fit-height: 150;
+    -fx-fit-width: 250;
+    /* Zaokrąglone tylko górne rogi */
+    -fx-background-radius: 12 12 0 0;
+    -fx-border-radius: 12 12 0 0;
+}
+
+/* Dolna sekcja z informacjami */
+.menu-info-section {
+    -fx-padding: 20 15 15 15;
+    -fx-spacing: 8;
+    -fx-alignment: center;
+}
+
+/* Nazwa produktu */
+.menu-name {
+    -fx-font-family: "Arial";
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #e0e6ed;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+    -fx-wrap-text: true;
+    -fx-max-width: 220;
+}
+
+/* Cena produktu */
+.menu-price {
+    -fx-font-family: "Arial";
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #5dade2;
+    -fx-alignment: center;
+    -fx-padding: 5 0 5 0;
+}
+
+/* Przycisk "Dodaj do zamówienia" */
+.menu-add-btn {
+    -fx-pref-width: 220;
+    -fx-pref-height: 38;
+    -fx-background-color: #5a9fd4;
+    -fx-text-fill: white;
+    -fx-font-family: "Arial";
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+}
+
+.menu-add-btn:hover {
+    -fx-background-color: #4a8fc4;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+.menu-add-btn:pressed {
+    -fx-background-color: #3a7fb4;
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
+
+
+/* ========================================
+   MAIN VIEW
+   ======================================== */
+
+.main-container{
+    -fx-background-color: #1a1f2e;
+    -fx-pref-height: 700;
+    -fx-pref-width: 1200;
+}
+
+/* Zakładki (TabPane) */
+/*.main-tabs {*/
+/*    -fx-background-color: #2d3548;*/
+/*    -fx-tab-min-height: 40px;*/
+/*}*/
+
+.main-category-tabs {
+    -fx-background-color: #2d3548;
+    -fx-tab-min-height: 40px;
+}
+
+.main-category-tabs .tab-header-area {
+    -fx-background-color: #252b3d;
+    -fx-padding: 10 10 15 10;
+}
+
+.main-category-tabs .tab-header-background {
+    -fx-background-color: #2d3548;
+}
+
+.main-category-tabs .tab {
+    -fx-background-color: rgba(90, 159, 212, 0.4);
+    -fx-background-radius: 8;
+    -fx-padding: 10 25 10 25;
+    -fx-background-insets: 0 8 0 8;
+}
+
+.main-category-tabs .tab:selected {
+    -fx-background-color: #5a9fd4;
+}
+
+.main-category-tabs .tab:hover {
+    -fx-background-color: rgba(90, 159, 212, 0.6);
+}
+
+.main-category-tabs .tab .tab-label {
+    -fx-text-fill: #e0e6ed;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+.main-category-tabs .tab:selected .tab-label {
+    -fx-text-fill: white;
+}
+
+/* ScrollPane dla treści */
+.main-scroll {
+    -fx-background-color: #1a1f2e;
+    -fx-fit-to-width: true;
+}
+
+/* GridPane z produktami */
+.main-content-grid-pane {
+    -fx-background-color: #1a1f2e;
+    -fx-hgap: 15;
+    -fx-vgap: 15;
+    -fx-padding: 20;
+}
+
+/* Boczny panel z zamówieniem */
+.main-sidebar {
+    -fx-pref-width: 400;
+    -fx-spacing: 15;
+    -fx-background-color: #252b3d;
+    -fx-padding: 25;
+}
+
+/* Tytuł "Twoje Zamówienie" */
+.order-title {
+    -fx-font-family: "Arial";
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-padding: 0 0 10 0;
+}
+
+/* ListView z zamówieniami */
+.order-list-view {
+    -fx-background-color: #2d3548;
+    -fx-border-radius: 5;
+    -fx-pref-height: 350;
+}
+
+/* Etykieta "SUMA:" */
+.total-price-label {
+    -fx-font-family: "Arial";
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+/* Etykieta z sumą ceny */
+.total-price-value {
+    -fx-font-family: "Arial";
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2ecc71;
+}
+
+/* Przycisk "Wyczyść zamówienie" */
+.btn-clean-order {
+    -fx-pref-width: 350;
+    -fx-pref-height: 50;
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+
+.btn-clean-order:hover {
+    -fx-background-color: #c0392b;
+}
+
+.btn-clean-order:pressed {
+    -fx-background-color: #a93226;
+}
+
+/* Przycisk "Złóż zamówienie" */
+.btn-place-order {
+    -fx-pref-width: 350;
+    -fx-pref-height: 50;
+    -fx-background-color: #2ecc71;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+
+.btn-place-order:hover {
+    -fx-background-color: #27ae60;
+}
+
+.btn-place-order:pressed {
+    -fx-background-color: #1e8449;
+}
+
+
+/* ========================================
+   EDIT ITEM VIEW (Panel edycji)
+   ======================================== */
+
+/* Główny kontener panelu edycji */
+.edit-panel {
+    -fx-alignment: top-center;
+    -fx-pref-width: 700;
+    -fx-pref-height: 600;
+    -fx-spacing: 25;
+    -fx-padding: 35 40 35 40;
+    -fx-background-color: #2d3548;
+    -fx-background-radius: 16;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 20, 0, 0, 8);
+}
+
+/* Kontener nagłówka */
+.edit-header {
+    -fx-alignment: center;
+    -fx-spacing: 12;
+    -fx-padding: 0 0 15 0;
+}
+
+/* Tytuł "Personalizacja Produktu" */
+.edit-title {
+    -fx-font-family: "Arial";
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #e0e6ed;
+}
+
+/* Nazwa produktu w panelu edycji */
+.edit-product-name {
+    -fx-font-family: "Arial";
+    -fx-font-size: 20px;
+    -fx-font-weight: normal;
+    -fx-text-fill: #5dade2;
+}
+
+/* Kontener sekcji dodatków */
+.edit-section {
+    -fx-spacing: 18;
+    -fx-padding: 10 0 10 0;
+}
+
+/* Etykieta "Wybierz dodatki:" */
+.edit-section-label {
+    -fx-font-family: "Arial";
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #34495e;
+}
+
+/* Kontener przycisków dodatków */
+.edit-addons-container {
+    -fx-alignment: center-left;
+    -fx-hgap: 15;
+    -fx-vgap: 15;
+    -fx-padding: 15;
+    -fx-background-color: #1f2430;
+    -fx-background-radius: 10;
+}
+
+/* Uniwersalny styl dla przycisków dodatków */
+.btn-addon {
+    -fx-background-color: #5a9fd4;
+    -fx-text-fill: white;
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-background-radius: 8;
+    -fx-padding: 12 24 12 24;
+    -fx-min-width: 140;
+    -fx-min-height: 45;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 4, 0, 0, 2);
+}
+
+.btn-addon:hover {
+    -fx-background-color: #4a8fc4;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 6, 0, 0, 3);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.btn-addon:pressed {
+    -fx-background-color: #3a7fb4;
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
+
+/* Warianty kolorystyczne dla różnych dodatków */
+.btn-addon-variant-1 {
+    -fx-background-color: #e74c3c;
+}
+
+.btn-addon-variant-1:hover {
+    -fx-background-color: #c0392b;
+}
+
+.btn-addon-variant-1:pressed {
+    -fx-background-color: #a93226;
+}
+
+.btn-addon-variant-2 {
+    -fx-background-color: #f39c12;
+}
+
+.btn-addon-variant-2:hover {
+    -fx-background-color: #e67e22;
+}
+
+.btn-addon-variant-2:pressed {
+    -fx-background-color: #d68910;
+}
+
+.btn-addon-variant-3 {
+    -fx-background-color: #8e44ad;
+}
+
+.btn-addon-variant-3:hover {
+    -fx-background-color: #7d3c98;
+}
+
+.btn-addon-variant-3:pressed {
+    -fx-background-color: #6c3483;
+}
+
+.btn-addon-variant-4 {
+    -fx-background-color: #2ecc71;
+}
+
+.btn-addon-variant-4:hover {
+    -fx-background-color: #27ae60;
+}
+
+.btn-addon-variant-4:pressed {
+    -fx-background-color: #1e8449;
+}
+
+/* Etykieta z informacjami o modyfikacjach */
+.edit-info-label {
+    -fx-alignment: center-left;
+    -fx-max-width: infinity;
+    -fx-min-height: 80;
+    -fx-padding: 18 20 18 20;
+    -fx-background-color: #1f2430;
+    -fx-background-radius: 10;
+    -fx-text-fill: #e0e6ed;
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-border-color: #5a9fd4;
+    -fx-border-width: 2;
+    -fx-border-radius: 10;
+    -fx-wrap-text: true;
+}
+
+/* Kontener przycisków akcji (Zapisz/Anuluj) */
+.edit-actions-container {
+    -fx-alignment: center;
+    -fx-spacing: 25;
+    -fx-padding: 20 0 0 0;
+}
+
+/* Przycisk "Zapisz" (zielony) */
+.btn-edit-save {
+    -fx-pref-height: 55;
+    -fx-pref-width: 180;
+    -fx-background-color: #2ecc71;
+    -fx-text-fill: white;
+    -fx-font-family: "Arial";
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 6, 0, 0, 3);
+}
+
+.btn-edit-save:hover {
+    -fx-background-color: #27ae60;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.25), 8, 0, 0, 4);
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
+}
+
+.btn-edit-save:pressed {
+    -fx-background-color: #1e8449;
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
+
+/* Przycisk "Anuluj" (szary) */
+.btn-edit-cancel {
+    -fx-pref-height: 55;
+    -fx-pref-width: 180;
+    -fx-background-color: #95a5a6;
+    -fx-text-fill: white;
+    -fx-font-family: "Arial";
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 6, 0, 0, 3);
+}
+
+.btn-edit-cancel:hover {
+    -fx-background-color: #7f8c8d;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.25), 8, 0, 0, 4);
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
+}
+
+.btn-edit-cancel:pressed {
+    -fx-background-color: #5d6d7e;
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
+
+/* ========================================
+   SEPARATOR (Ciemny motyw)
+   ======================================== */
+
+.separator {
+    -fx-background-color: #3d4556;
+}
+
+.separator .line {
+    -fx-background-color: #3d4556;
+    -fx-border-color: #3d4556;
+}
+
+/* ========================================
+   LISTVIEW (Ciemny motyw)
+   ======================================== */
+
+.list-view {
+    -fx-background-color: #2d3548;
+}
+
+.list-cell {
+    -fx-background-color: #2d3548;
+    -fx-text-fill: #e0e6ed;
+}
+
+.list-cell:filled:selected {
+    -fx-background-color: #3d4556;
+    -fx-text-fill: #5dade2;
+}
+
+.list-cell:filled:hover {
+    -fx-background-color: #3a4256;
+}
+
+/* ========================================
+   SCROLLPANE (Ciemny motyw)
+   ======================================== */
+
+.scroll-pane {
+    -fx-background-color: #1a1f2e;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: #1a1f2e;
+}
+
+.scroll-pane .scroll-bar:vertical {
+    -fx-background-color: #2d3548;
+}
+
+.scroll-pane .scroll-bar:horizontal {
+    -fx-background-color: #2d3548;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #5a9fd4;
+    -fx-background-radius: 5;
+}
+
+.scroll-bar .thumb:hover {
+    -fx-background-color: #4a8fc4;
+}
+
+/* ========================================
+   TABPANE (Ciemny motyw)
+   ======================================== */
+
+.tab-pane {
+    -fx-background-color: #1a1f2e;
+    -fx-background-insets: 0;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.tab-pane .tab-header-area {
+    -fx-background-color: #1a1f2e;
+}
+
+.tab-pane .tab-header-background {
+    -fx-background-color: #2d3548;
+}
+
+/*.tab-pane .tab {*/
+/*    -fx-background-color: #3d4556;*/
+/*    -fx-background-radius: 8 8 0 0;*/
+/*    -fx-padding: 10 20 10 20;*/
+/*}*/
+
+.tab-pane .tab:selected {
+    -fx-background-color: #56a7ec;
+}
+
+.tab-pane .tab:hover {
+    -fx-background-color: #3a4256;
+}
+
+.tab-pane .tab .tab-label {
+    -fx-text-fill: #e0e6ed;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+/*.tab-pane .tab:selected .tab-label {*/
+/*    -fx-text-fill: #5dade2;*/
+/*}*/
+
+.btn-edit-cancel:pressed {
+    -fx-background-color: #5d6d7e;
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
+
+/* ========== Login (POS) ========== */
+
+.login-root {
+    -fx-background-color: linear-gradient(to bottom, #1a1f2e, #252b3d);
+}
+
+.login-card {
+    -fx-background-color: #2d3548;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.35), 20, 0, 0, 4);
+}
+
+.login-title {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #e0e6ed;
+}
+
+.login-subtitle {
+    -fx-font-size: 15px;
+    -fx-text-fill: #b0b8c3;
+}
+
+.login-field-block {
+    -fx-pref-width: 400;
+}
+
+.login-field-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #cfd5df;
+}
+
+.login-field {
+    -fx-font-size: 16px;
+    -fx-pref-height: 48;
+    -fx-background-radius: 8;
+    -fx-padding: 8 12 8 12;
+}
+
+.login-error {
+    -fx-text-fill: #e74c3c;
+    -fx-font-size: 14px;
+    -fx-wrap-text: true;
+}
+
+.login-primary-btn {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-color: #3498db;
+    -fx-background-radius: 8;
+    -fx-padding: 12 32 12 32;
+    -fx-cursor: hand;
+    -fx-min-width: 160;
+    -fx-min-height: 48;
+}
+
+.login-primary-btn:hover {
+    -fx-background-color: #2980b9;
+}
+
+.login-primary-btn:disabled {
+    -fx-opacity: 0.6;
+}
+
+/* ========== Main toolbar / session menu ========== */
+
+.main-top-area {
+    -fx-spacing: 0;
+}
+
+.main-toolbar {
+    -fx-padding: 8 12 8 12;
+    -fx-background-color: #252b3d;
+}
+
+.btn-session-menu,
+.btn-logout {
+    -fx-font-size: 13px;
+    -fx-text-fill: #e0e6ed;
+    -fx-background-color: #3d4556;
+    -fx-background-radius: 6;
+    -fx-padding: 8 16 8 16;
+    -fx-cursor: hand;
+}
+
+.btn-session-menu:hover,
+.btn-logout:hover {
+    -fx-background-color: #4a5568;
+    -fx-text-fill: white;
+}
+
+.session-menu-description {
+    -fx-font-size: 14px;
+    -fx-text-fill: #2c3e50;
+}
+
+.session-menu-dialog {
+    -fx-background-color: #ffffff;
+}
+

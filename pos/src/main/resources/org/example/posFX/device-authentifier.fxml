@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane styleClass="login-root"
+            xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.posFX.auth.device.DeviceAuthController">
+
+    <center>
+        <VBox alignment="CENTER" spacing="20" styleClass="login-card" maxWidth="520">
+            <padding>
+                <Insets bottom="40" left="40" right="40" top="40"/>
+            </padding>
+            <children>
+                <Label styleClass="login-title" text="Rejestracja urządzenia"/>
+                <Label styleClass="login-subtitle" text="Autentyfikuj urządzenie POS"/>
+
+                <VBox spacing="8" styleClass="login-field-block">
+                    <children>
+                        <Label styleClass="login-field-label" text="Email"/>
+                        <TextField fx:id="emailField" styleClass="login-field" promptText="twoj@email.pl"/>
+                    </children>
+                </VBox>
+
+                <VBox spacing="8" styleClass="login-field-block">
+                    <children>
+                        <Label styleClass="login-field-label" text="Hasło"/>
+                        <PasswordField fx:id="passwordField" styleClass="login-field" promptText="••••••••"/>
+                    </children>
+                </VBox>
+
+                <VBox spacing="8" styleClass="login-field-block">
+                    <children>
+                        <Label styleClass="login-field-label" text="Nazwa POS"/>
+                        <TextField fx:id="posNameField" styleClass="login-field" promptText="POS-01"/>
+                    </children>
+                </VBox>
+
+                <VBox spacing="8" styleClass="login-field-block">
+                    <children>
+                        <Label styleClass="login-field-label" text="Nazwa restauracji"/>
+                        <TextField fx:id="restaurantNameField" styleClass="login-field" promptText="Twoja Restauracja"/>
+                    </children>
+                </VBox>
+
+                <Label fx:id="errorLabel" styleClass="login-error" wrapText="true" maxWidth="400"/>
+
+                <HBox alignment="CENTER" spacing="12">
+                    <children>
+                        <ProgressIndicator fx:id="progressIndicator" prefWidth="28" prefHeight="28"/>
+                        <Button fx:id="authenticateButton" defaultButton="true" onAction="#onAuthenticateClicked"
+                                styleClass="login-primary-btn" text="Zarejestruj urządzenie"/>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </center>
+</BorderPane>

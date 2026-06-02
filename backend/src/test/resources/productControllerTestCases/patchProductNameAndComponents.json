@@ -1,0 +1,9 @@
+{
+    "name":"NEW NAME",
+    "productsSemiProducts":
+        [
+            {"semiProductId":1 , "quantity":1},
+            {"semiProductId":2 , "quantity":1},
+            {"semiProductId":3 , "quantity":1}
+        ]
+}

@@ -1,0 +1,200 @@
+{
+  "menuItems": [
+    {
+      "id": 1,
+      "name": "Junior Classic Burger 120g",
+      "category": "BURGER",
+      "price": 29.00,
+      "type": "SINGLE_PRODUCT",
+      "components": []
+    },
+    {
+      "id": 2,
+      "name": "Classic Burger 180g",
+      "category": "BURGER",
+      "price": 34.00,
+      "type": "SINGLE_PRODUCT",
+      "components": []
+    },
+    {
+      "id": 3,
+      "name": "Goliath Burger 360g",
+      "category": "BURGER",
+      "price": 49.00,
+      "type": "SINGLE_PRODUCT",
+      "components": []
+    },
+    {
+      "id": 8,
+      "name": "Chicken Supreme Burger",
+      "category": "BURGER",
+      "price": 35.00,
+      "type": "SINGLE_PRODUCT",
+      "components": []
+    },
+    {
+      "id": 9,
+      "name": "Veggie Burger",
+      "category": "BURGER",
+      "price": 32.00,
+      "type": "SINGLE_PRODUCT",
+      "components": []
+    },
+
+    {
+      "id": 11,
+      "name": "Coca-Cola 0.3l",
+      "category": "DRINK",
+      "price": 7.00,
+      "type": "SINGLE_PRODUCT",
+      "components": []
+    },
+    {
+      "id": 12,
+      "name": "Coca-Cola 0.5l",
+      "category": "DRINK",
+      "price": 9.00,
+      "type": "SINGLE_PRODUCT",
+      "components": []
+    },
+    {
+      "id": 16,
+      "name": "Lemoniada domowa 0.4l",
+      "category": "DRINK",
+      "price": 10.00,
+      "type": "SINGLE_PRODUCT",
+      "components": []
+    },
+
+    {
+      "id": 17,
+      "name": "Frytki klasyczne - Małe 100g",
+      "category": "SITE",
+      "price": 10.00,
+      "type": "SINGLE_PRODUCT",
+      "components": []
+    },
+    {
+      "id": 18,
+      "name": "Frytki klasyczne - Duże 200g",
+      "category": "SITE",
+      "price": 14.00,
+      "type": "SINGLE_PRODUCT",
+      "components": []
+    },
+    {
+      "id": 20,
+      "name": "Krążki cebulowe 8szt.",
+      "category": "SITE",
+      "price": 14.00,
+      "type": "SINGLE_PRODUCT",
+      "components": []
+    },
+
+    {
+      "id": 21,
+      "name": "Zestaw Klasyczny Duży",
+      "category": "SET",
+      "price": 52.00,
+      "type": "COMBO",
+      "components": [
+        { "menuItem":{"id": 2, "name": "Classic Burger 180g", "category": "BURGER"}, "quantity": 1 },
+        { "menuItem":{"id": 18, "name": "Frytki klasyczne - Duże 200g", "category": "SITE"}, "quantity": 1 },
+        { "menuItem":{"id": 12, "name": "Coca-Cola 0.5l", "category": "DRINK"}, "quantity": 1 }
+      ]
+    },
+    {
+      "id": 22,
+      "name": "Zestaw z Kurczakiem",
+      "category": "SET",
+      "price": 50.00,
+      "type": "COMBO",
+      "components": [
+        {"menuItem":{ "id": 8, "name": "Chicken Supreme Burger", "category": "BURGER"}, "quantity": 1 },
+        {"menuItem":{ "id": 17, "name": "Frytki klasyczne - Małe 100g", "category": "SITE"}, "quantity": 1 },
+        {"menuItem":{ "id": 16, "name": "Lemoniada domowa 0.4l", "category": "DRINK"}, "quantity": 1 }
+      ]
+    },
+    {
+      "id": 23,
+      "name": "Zestaw Vege",
+      "category": "SET",
+      "price": 48.00,
+      "type": "COMBO",
+      "components": [
+        {"menuItem":{ "id": 9, "name": "Veggie Burger", "category": "BURGER"}, "quantity": 1 },
+        {"menuItem":{ "id": 19, "name": "Frytki z batatów 150g", "category": "SITE"}, "quantity": 1 },
+        {"menuItem":{ "id": 13, "name": "Woda gazowana 0.5l", "category": "DRINK"}, "quantity": 1 }
+      ]
+    },
+    {
+      "id": 24,
+      "name": "Zestaw Goliata",
+      "category": "SET",
+      "price": 65.00,
+      "type": "COMBO",
+      "components": [
+        {"menuItem":{ "id": 3, "name": "Goliath Burger 360g", "category": "BURGER"}, "quantity": 1 },
+        {"menuItem":{ "id": 20, "name": "Krążki cebulowe 8szt.", "category": "SITE"}, "quantity": 1 },
+        {"menuItem":{ "id": 15, "name": "Piwo rzemieślnicze IPA", "category": "DRINK"}, "quantity": 1 }
+      ]
+    }
+  ],
+
+  "modificationTemplates": [
+    {
+      "id": 1,
+      "name": "Dodatkowy ser Cheddar",
+      "category": "BURGER",
+      "price": 4.00
+    },
+    {
+      "id": 2,
+      "name": "Dodatkowy bekon",
+      "category": "BURGER",
+      "price": 6.00
+    },
+    {
+      "id": 3,
+      "name": "Dodatkowa wołowina 180g",
+      "category": "BURGER",
+      "price": 12.00
+    },
+    {
+      "id": 4,
+      "name": "Dodaj Jalapeño",
+      "category": "BURGER",
+      "price": 3.00
+    },
+    {
+      "id": 5,
+      "name": "Bez cebuli",
+      "category": "BURGER",
+      "price": 0.00
+    },
+    {
+      "id": 6,
+      "name": "Dodatkowy sos BBQ",
+      "category": "BURGER",
+      "price": 2.50
+    },
+    {
+      "id": 7,
+      "name": "Zamień na frytki z batatów",
+      "category": "CHANGE",
+      "price": 4.00
+    },
+    {
+      "id": 8,
+      "name": "Dodaj jajko sadzone",
+      "category": "BURGER",
+      "price": 5.00
+    },
+    {
+      "id": 9,
+      "name": "Bez lodu",
+      "category": "DRINK",
+      "price": 0.00
+    }
+  ]
+}

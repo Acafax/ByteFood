@@ -1,0 +1,24 @@
+{
+  "name": "cos",
+  "category": 100,
+  "price": "19.95",
+  "productsSemiProducts": [
+    {
+      "invalid_data_name": 4,
+      "quantity": 2
+    },
+    {
+      "semiProductId": 10,
+      "quantity": 2
+    },
+    {
+      "semiProductId": 15,
+      "quantity": 1
+    },
+    {
+      "semiProductId": 12,
+      "quantity": 1
+    }
+  ]
+}
+

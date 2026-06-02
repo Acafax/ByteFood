@@ -1,0 +1,147 @@
+{
+  "id": 1,
+  "orderTime": "2025-07-30T12:30:00",
+  "preparationTime": "PT15M",
+  "price": 147.00,
+  "products": [
+    {
+      "quantity": 1,
+      "price": 34.00,
+      "description": "Classic Burger 180g - standardowy",
+      "product": {
+        "id": 2,
+        "name": "Classic Burger 180g",
+        "category": "BURGER",
+        "price": 34.00,
+        "productSemiProductIdQuantity": {
+          "17": 1.00,
+          "1": 1.00,
+          "6": 1.00,
+          "26": 1.00,
+          "14": 1.00,
+          "15": 1.00
+        }
+      },
+      "modifications": []
+    },
+    {
+      "quantity": 1,
+      "price": 9.00,
+      "description": "Coca-Cola 0.5l",
+      "product": {
+        "id": 12,
+        "name": "Coca-Cola 0.5l",
+        "category": "DRINK",
+        "price": 9.00,
+        "productSemiProductIdQuantity": {}
+      },
+      "modifications": []
+    },
+    {
+      "quantity": 1,
+      "price": 38.00,
+      "description": "Classic Burger 180g - z dodatkowym serem Cheddar",
+      "product": {
+        "id": 2,
+        "name": "Classic Burger 180g",
+        "category": "BURGER",
+        "price": 34.00,
+        "productSemiProductIdQuantity": {
+          "17": 1.00,
+          "1": 1.00,
+          "6": 1.00,
+          "26": 1.00,
+          "14": 1.00,
+          "15": 1.00
+        }
+      },
+      "modifications": [
+        {
+          "quantity": 1,
+          "price": 4.00,
+          "modificationTemplateDto": {
+            "id": 1,
+            "name": "Dodatkowy ser Cheddar",
+            "price": 4.00,
+            "category": "BURGER",
+            "semiProductId": 10,
+            "restaurantId": 1
+          },
+          "semiProductId": 10
+        }
+      ]
+    }
+  ],
+  "combos": [
+    {
+      "quantity": 1,
+      "priceOfCombos": 56.00,
+      "combo": {
+        "name": "Zestaw Klasyczny Duży",
+        "price": 52.00,
+        "comboProduct": [
+          {
+            "quantity": 1,
+            "price": 38.00,
+            "description": "Classic Burger 180g - z dodatkowym serem Cheddar (część zestawu)",
+            "product": {
+              "id": 2,
+              "name": "Classic Burger 180g",
+              "category": "BURGER",
+              "price": 34.00,
+              "productSemiProductIdQuantity": {
+                "17": 1.00,
+                "1": 1.00,
+                "6": 1.00,
+                "26": 1.00,
+                "14": 1.00,
+                "15": 1.00
+              }
+            },
+            "modifications": [
+              {
+                "quantity": 1,
+                "price": 4.00,
+                "modificationTemplateDto": {
+                  "id": 1,
+                  "name": "Dodatkowy ser Cheddar",
+                  "price": 4.00,
+                  "category": "BURGER",
+                  "semiProductId": 10,
+                  "restaurantId": 1
+                },
+                "semiProductId": 10
+              }
+            ]
+          },
+          {
+            "quantity": 1,
+            "price": 14.00,
+            "description": "Frytki klasyczne - Duże 200g (część zestawu)",
+            "product": {
+              "id": 18,
+              "name": "Frytki klasyczne - Duże 200g",
+              "category": "SITE",
+              "price": 14.00,
+              "productSemiProductIdQuantity": {}
+            },
+            "modifications": []
+          },
+          {
+            "quantity": 1,
+            "price": 9.00,
+            "description": "Coca-Cola 0.5l (część zestawu)",
+            "product": {
+              "id": 12,
+              "name": "Coca-Cola 0.5l",
+              "category": "DRINK",
+              "price": 9.00,
+              "productSemiProductIdQuantity": {}
+            },
+            "modifications": []
+          }
+        ]
+      }
+    }
+  ]
+}
