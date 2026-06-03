@@ -80,3 +80,4 @@ Thumbs.db
 *~
 
 /.m2-repo/
+/backend/src/main/resources/changeLog.xml

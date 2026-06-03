@@ -42,6 +42,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         List<String> publicEndpoints = new ArrayList<>(Arrays.asList(
                 "/api/auth/login",
+                "/api/auth/register",
                 "/api/device-api-key/generate",
                 "/error"
         ));
