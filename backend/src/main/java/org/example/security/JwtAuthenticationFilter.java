@@ -71,8 +71,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                  io.jsonwebtoken.SignatureException |
                  io.jsonwebtoken.UnsupportedJwtException |
                  IllegalArgumentException e) {
-            // Loguj błąd JWT i przepuść request dalej
-            // Spring Security automatycznie zwróci 401 przez AuthenticationEntryPoint
+
             log.debug("JWT validation failed: {}", e.getMessage());
             filterChain.doFilter(request, response);
 
