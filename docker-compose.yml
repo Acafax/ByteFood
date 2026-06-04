@@ -83,6 +83,15 @@ services:
       timeout: 5s
       retries: 5
 
+  redis-device-auth:
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}  # save db every 20s. if at least one changes was made | sets the logging to show only WARNs
+    volumes:
+      - device-auth:/data
+
   frontend:
     image: ghcr.io/acafax/bytefood-frontend:latest
     labels:
