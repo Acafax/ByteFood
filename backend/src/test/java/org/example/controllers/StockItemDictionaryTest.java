@@ -497,7 +497,6 @@ public class StockItemDictionaryTest extends IntegrationTestBase {
                     .statusCode(403);
 
 
-            // Verification of the absence of side effects in the DB
             Optional<StockItemDictionary> entity = stockItemDictionariesRepository.findById(100L);
             Assertions.assertTrue(entity.isPresent());
             Assertions.assertNotEquals("NEW NAME", entity.get().getName());

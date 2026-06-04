@@ -18,11 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
-    private final AppSecurityProperties appSecurityProperties;
 
-    public AuthController(AuthService authService, AppSecurityProperties appSecurityProperties) {
+    public AuthController(AuthService authService ) {
         this.authService = authService;
-        this.appSecurityProperties = appSecurityProperties;
     }
 
     @PostMapping("/login")
@@ -33,9 +31,6 @@ public class AuthController {
 
     @PostMapping("/register")
     ResponseEntity<LoginResponse> register(@Valid @RequestBody RegisterRequest registerRequest) {
-        if (!appSecurityProperties.isRegistrationEnabled()) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
         LoginResponse registrationResponse = authService.register(registerRequest);
         return ResponseEntity.ok().body(registrationResponse);
     }

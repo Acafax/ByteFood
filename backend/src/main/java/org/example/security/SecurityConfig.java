@@ -46,9 +46,6 @@ public class SecurityConfig {
                 "/api/device-api-key/generate",
                 "/error"
         ));
-        if (appSecurityProperties.isRegistrationEnabled()) {
-            publicEndpoints.add("/api/auth/register");
-        }
 
         http
                 .csrf(AbstractHttpConfigurer::disable)
