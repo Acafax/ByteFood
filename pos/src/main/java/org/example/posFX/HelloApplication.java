@@ -20,7 +20,7 @@ import java.util.Optional;
 
 public class HelloApplication extends Application {
 
-    private static final String DEFAULT_API_BASE = "http://localhost:8080";
+    private static final String DEFAULT_API_BASE = "https://bytefood.pl";
 
     @Override
     public void start(Stage primaryStage) {
