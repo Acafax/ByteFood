@@ -5,6 +5,7 @@ import org.example.dtos.LoginRequest;
 import org.example.dtos.LoginResponse;
 import org.example.dtos.device_auth.DeviceAuthPayload;
 import org.example.dtos.device_auth.DeviceAuthResult;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -22,10 +23,12 @@ public class DeviceAuthService {
 
     private final StringRedisTemplate stringRedisTemplate;
     private final AuthService authService;
+    private final RedisTemplate<String, String> redisTemplate;
 
-    public DeviceAuthService(StringRedisTemplate stringRedisTemplate, AuthService authService) {
+    public DeviceAuthService(StringRedisTemplate stringRedisTemplate, AuthService authService, RedisTemplate<String, String> redisTemplate) {
         this.stringRedisTemplate = stringRedisTemplate;
         this.authService = authService;
+        this.redisTemplate = redisTemplate;
     }
 
     public String saveApiKeyInRedis(DeviceAuthPayload deviceAuthPayload){
@@ -62,9 +65,12 @@ public class DeviceAuthService {
     }
 
 
+    public boolean checkApiKey(String ApiKey) {
+        String value = redisTemplate.opsForValue().get(ApiKey);
 
-
-
-
-
+        if (value.equals("1")){
+            return true;
+        }
+        return false;
+    }
 }

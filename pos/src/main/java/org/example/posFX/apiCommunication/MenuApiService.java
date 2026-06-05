@@ -1,6 +1,7 @@
 package org.example.posFX.apiCommunication;
 
 import javafx.application.Platform;
+import org.example.posFX.auth.device.CredentialService;
 import org.example.posFX.objects.OrderItem;
 import org.example.posFX.session.AuthorizedHttpRequestFactory;
 
@@ -22,15 +23,17 @@ public class MenuApiService {
     private final AuthorizedHttpRequestFactory requestFactory;
     private final OrderMapper orderMapper;
     private final String apiBaseUrl;
+    private final CredentialService credentialService;
 
     public MenuApiService(
             AuthorizedHttpRequestFactory requestFactory,
             OrderMapper orderMapper,
-            String apiBaseUrl
+            String apiBaseUrl, CredentialService credentialService
     ) {
         this.requestFactory = Objects.requireNonNull(requestFactory);
         this.orderMapper = Objects.requireNonNull(orderMapper);
         this.apiBaseUrl = Objects.requireNonNull(apiBaseUrl);
+        this.credentialService = credentialService;
     }
 
     public void submitOrderAsync(List<OrderItem> orderItems, Consumer<String> onSuccess, Consumer<String> onError) {
@@ -39,10 +42,14 @@ public class MenuApiService {
             return;
         }
 
+        String apiKey = credentialService.getApiKey()
+                .orElseThrow(() -> new IllegalStateException("Brak ApiKey do autoryzacji żądania."));
+
         try {
             String json = orderMapper.toCreateOrderJson(orderItems);
             HttpRequest request = requestFactory
                     .newBuilder(ApiEndpoints.CREATE_ORDER.toUri(apiBaseUrl))
+                    .header("X-API-KEY", apiKey)
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(json, StandardCharsets.UTF_8))
                     .build();

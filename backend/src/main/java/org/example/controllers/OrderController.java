@@ -12,6 +12,7 @@ import org.example.services.ComboService;
 import org.example.services.OrderService;
 import org.example.services.ProductService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -22,20 +23,18 @@ public class OrderController {
 
 
     private final OrderService orderService;
-    private final ProductService productService;
-    private final ComboService comboService;
-    private final ModificationTemplateRepository modificationTemplateRepository;
 
 
-    public OrderController(OrderService orderService, ProductService productService, ComboService comboService, ModificationTemplateRepository modificationTemplateRepository) {
+    public OrderController(OrderService orderService) {
         this.orderService = orderService;
-        this.productService = productService;
-        this.comboService = comboService;
-        this.modificationTemplateRepository = modificationTemplateRepository;
     }
 
     @PostMapping("/")
-    ResponseEntity<OrderDto> receiveOrder ( @Valid @RequestBody CreateOrderDTORequest dto){
+    @PreAuthorize("@securityService.authentifyApiKey(#apiKey)")
+    ResponseEntity<OrderDto> receiveOrder (
+            @RequestHeader(value = "X-API-KEY") String apiKey,
+            @Valid @RequestBody CreateOrderDTORequest dto)
+    {
         OrderDto orderDto = orderService.saveOrder(dto);
         return ResponseEntity.ok(orderDto);
     }

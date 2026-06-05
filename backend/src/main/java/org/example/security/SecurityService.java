@@ -3,6 +3,7 @@ package org.example.security;
 
 import lombok.extern.slf4j.Slf4j;
 import org.example.repositories.UserRepository;
+import org.example.services.DeviceAuthService;
 import org.example.util.exceptionsHandler.UserDoesNotHaveRestaurant;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,12 +26,12 @@ import java.util.Optional;
 @Service
 public class SecurityService {
 
-    private final UserRepository userRepository;
     private final CustomUserDetailsService customUserDetailsService;
+    private final DeviceAuthService deviceAuthService;
 
-    public SecurityService(UserRepository userRepository, CustomUserDetailsService customUserDetailsService) {
-        this.userRepository = userRepository;
+    public SecurityService(CustomUserDetailsService customUserDetailsService, DeviceAuthService deviceAuthService) {
         this.customUserDetailsService = customUserDetailsService;
+        this.deviceAuthService = deviceAuthService;
     }
 
 
@@ -44,7 +45,10 @@ public class SecurityService {
         } catch (Exception e) {
             return false;
         }
+    }
 
+    public boolean authentifyApiKey(String apiKey){
+        return deviceAuthService.checkApiKey(apiKey);
     }
 
     public boolean isEmployee(){

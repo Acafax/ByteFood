@@ -34,7 +34,7 @@ public class HelloApplication extends Application {
         AuthApiService authApiService = new AuthApiService(httpClient, objectMapper, apiBase);
         ApiClient apiClient = new ApiClient(httpClient, authSession, objectMapper, apiBase);
         OrderMapper orderMapper = new OrderMapper(objectMapper);
-        MenuApiService menuApiService = new MenuApiService(requestFactory, orderMapper, apiBase);
+        MenuApiService menuApiService = new MenuApiService(requestFactory, orderMapper, apiBase, credentialService);
         DeviceAuthService deviceAuthService = new DeviceAuthService(apiClient, authSession, credentialService);
 
         String stylesheet = stylesheetUrl();
