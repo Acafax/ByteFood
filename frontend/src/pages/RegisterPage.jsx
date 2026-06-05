@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/useAuth.js';
 import { Mail, Lock, User } from 'lucide-react';
 import FormField from '../components/ui/FormField.jsx';
 import AlertMessage from '../components/ui/AlertMessage.jsx';

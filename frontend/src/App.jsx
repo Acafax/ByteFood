@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
+import { useInitializeAuth } from './hooks/useInitializeAuth.js';
 import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
@@ -15,9 +15,10 @@ import CreateSet from './pages/CreateSet';
 import './App.css';
 
 function App() {
+  useInitializeAuth();
+
   return (
-    <AuthProvider>
-      <BrowserRouter>
+    <BrowserRouter>
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<HomePage />} />
@@ -37,8 +38,7 @@ function App() {
           {/* Legacy redirect */}
           <Route path="/main-admin-panel" element={<Navigate to="/dashboard" replace />} />
         </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+    </BrowserRouter>
   );
 }
 

@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { useAuth } from '../context/AuthContext.jsx';
+import { useAuth } from './useAuth.js';
 import { useCreateSemiProduct } from './useSemiProduct.js';
 
 const INITIAL_FORM_DATA = {

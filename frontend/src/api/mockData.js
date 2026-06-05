@@ -15,6 +15,14 @@ const mockData = {
     token: 'mock-token-123',
     expirationTime: Date.now() + 86400000,
   },
+  // Wariant z restauracją: restaurantId: 1
+  // Wariant bez restauracji: restaurantId: null
+  '/auth/me': {
+    restaurantId: 1,
+    email: 'dev@example.com',
+    username: 'Dev',
+    role: 'MANAGER',
+  },
   '/units': ['G', 'ML', 'PCS'],
   '/categories': ['BURGER', 'DRINK', 'SITE'],
   '/semi-products': [

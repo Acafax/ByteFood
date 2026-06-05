@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/useAuth.js';
 import { LogOut, User } from 'lucide-react';
 import { MENU_ITEMS } from '../constants/navigation.js';
 import SidebarNavList from './SidebarNavList.jsx';
