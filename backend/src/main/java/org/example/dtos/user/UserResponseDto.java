@@ -1,4 +1,4 @@
-package org.example.dtos;
+package org.example.dtos.user;
 
 import org.example.models.User;
 import org.example.security.UserRole;

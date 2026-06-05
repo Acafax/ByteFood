@@ -1,7 +1,7 @@
 
 package org.example.builders;
 
-import org.example.dtos.CreateProductSemiProductsDto;
+import org.example.dtos.semiProducts.CreateProductSemiProductsDto;
 
 import java.math.BigDecimal;
 import java.util.HashSet;

@@ -1,17 +1,13 @@
 package org.example.controllers;
 
 import jakarta.validation.Valid;
-import org.example.config.AppSecurityProperties;
-import org.example.dtos.LoginRequest;
-import org.example.dtos.LoginResponse;
-import org.example.dtos.RegisterRequest;
+import org.example.dtos.user.LoginRequest;
+import org.example.dtos.user.LoginResponse;
+import org.example.dtos.user.RegisterRequest;
+import org.example.dtos.user.UserInformation;
 import org.example.services.AuthService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -33,5 +29,11 @@ public class AuthController {
     ResponseEntity<LoginResponse> register(@Valid @RequestBody RegisterRequest registerRequest) {
         LoginResponse registrationResponse = authService.register(registerRequest);
         return ResponseEntity.ok().body(registrationResponse);
+    }
+
+    @GetMapping("/me")
+    ResponseEntity<UserInformation> getUserInformation() {
+        UserInformation userInformation = authService.getCurrentUserInformation();
+        return ResponseEntity.ok().body(userInformation);
     }
 }

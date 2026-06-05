@@ -1,7 +1,7 @@
 package org.example.controllers;
 
 
-import org.example.dtos.UserResponseDto;
+import org.example.dtos.user.UserResponseDto;
 import org.example.repositories.UserRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

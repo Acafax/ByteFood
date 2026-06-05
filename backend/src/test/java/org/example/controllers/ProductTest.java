@@ -6,7 +6,6 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.example.IntegrationTestBase;
 import org.example.builders.ProductTestBuilder;
-import org.example.dtos.CreateProductSemiProductsDto;
 import org.example.models.Product;
 import org.example.repositories.ProductRepository;
 import org.example.repositories.ProductSemiProductRepository;
@@ -20,17 +19,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ResourceUtils;
 import static io.restassured.path.json.config.JsonPathConfig.NumberReturnType.BIG_DECIMAL;
 
-import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.util.Optional;
-import java.util.Set;
 
 import static io.restassured.RestAssured.*;
 import static io.restassured.config.JsonConfig.jsonConfig;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 
 
 @Slf4j

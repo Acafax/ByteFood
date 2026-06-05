@@ -1,11 +1,9 @@
 package org.example.dtos.order;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
-import org.example.dtos.ModificationRequestDTO;
-import org.example.util.annotation.NullOrValid;
+import org.example.dtos.modification.ModificationRequestDTO;
 
 import java.math.BigDecimal;
 import java.util.List;

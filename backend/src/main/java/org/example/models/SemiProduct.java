@@ -44,7 +44,8 @@ public class SemiProduct {
     @Enumerated(EnumType.STRING)
     private UnitType unit;
 
-    // section to differentiate product change modification (subCategory: "Patties, Fries": )
+    // section to differentiate product change modification
+    // (subCategory: "Patties, Fries": )
     @ManyToOne
     @JoinColumn(name = "subcategory")
     private Subcategory subcategory;

@@ -1,7 +1,7 @@
 package org.example.dtos.product;
 
 import jakarta.validation.Valid;
-import org.example.dtos.CreateProductSemiProductsDto;
+import org.example.dtos.semiProducts.CreateProductSemiProductsDto;
 import org.example.util.annotation.AtLeastOneNotNull;
 import org.example.util.annotation.NullOrNotEmpty;
 import org.example.util.annotation.NullOrValid;

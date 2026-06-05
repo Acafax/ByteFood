@@ -1,9 +1,10 @@
 package org.example.services;
 
 import lombok.extern.slf4j.Slf4j;
-import org.example.dtos.RegisterRequest;
+import org.example.dtos.user.RegisterRequest;
 import org.example.dtos.device_auth.DeviceAuthPayload;
 import org.example.dtos.device_auth.DeviceAuthResult;
+import org.example.dtos.user.UserInformation;
 import org.example.models.User;
 import org.example.repositories.UserRepository;
 import org.example.security.SecurityUser;
@@ -12,14 +13,13 @@ import org.example.util.exceptionsHandler.UserAlreadyExistException;
 import org.example.util.exceptionsHandler.UserDoesNotHaveRestaurant;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.example.dtos.LoginRequest;
-import org.example.dtos.LoginResponse;
+import org.example.dtos.user.LoginRequest;
+import org.example.dtos.user.LoginResponse;
 import org.example.security.CustomUserDetailsService;
 import org.example.security.JwtService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -102,6 +102,19 @@ public class AuthService {
                 createdUser.getLastName(),
                 createdUser.getRestaurant() != null ? createdUser.getRestaurant().getId() : null
         );
+
+    }
+
+    public UserInformation getCurrentUserInformation() {
+        SecurityUser currentUser = customUserDetailsService.getCurrentUser();
+
+        return new UserInformation(
+                currentUser.getRestaurantId().orElse(null),
+                currentUser.getEmail(),
+                currentUser.getName(),
+                currentUser.getRole()
+        );
+
 
     }
 }

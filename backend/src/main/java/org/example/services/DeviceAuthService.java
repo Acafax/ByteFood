@@ -1,15 +1,10 @@
 package org.example.services;
 
 import lombok.extern.slf4j.Slf4j;
-import org.example.dtos.LoginRequest;
-import org.example.dtos.LoginResponse;
 import org.example.dtos.device_auth.DeviceAuthPayload;
 import org.example.dtos.device_auth.DeviceAuthResult;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import com.google.common.hash.Hashing;
 

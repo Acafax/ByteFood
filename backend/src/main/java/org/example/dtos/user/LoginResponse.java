@@ -1,4 +1,4 @@
-package org.example.dtos;
+package org.example.dtos.user;
 
 import java.time.LocalDateTime;
 import java.util.Date;

@@ -1,4 +1,4 @@
-package org.example.dtos;
+package org.example.dtos.modification;
 
 import jakarta.validation.constraints.*;
 

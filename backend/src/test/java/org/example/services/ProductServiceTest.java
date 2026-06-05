@@ -1,7 +1,7 @@
 package org.example.services;
 
 import jakarta.persistence.EntityNotFoundException;
-import org.example.dtos.CreateProductSemiProductsDto;
+import org.example.dtos.semiProducts.CreateProductSemiProductsDto;
 import org.example.dtos.mapers.ProductDtoMapper;
 import org.example.dtos.mapers.SemiProductsDtoMapper;
 import org.example.dtos.product.CreateProductDto;

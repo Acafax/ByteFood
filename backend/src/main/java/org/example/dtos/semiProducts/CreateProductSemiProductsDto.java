@@ -1,4 +1,4 @@
-package org.example.dtos;
+package org.example.dtos.semiProducts;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
