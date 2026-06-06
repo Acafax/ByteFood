@@ -1,0 +1,22 @@
+package org.example.dtos.employee;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
+public record CreateEmployeeRequest(
+        @NotBlank(message = "Email cannot be blank")
+        @Email(message = "Email must be valid")
+        String email,
+
+        @NotBlank(message = "Password cannot be blank")
+        @Size(min = 12, message = "Password must be at least 12 characters")
+        String password,
+
+        @NotBlank(message = "Name cannot be blank")
+        String name,
+
+        @NotBlank(message = "Last name cannot be blank")
+        String lastName
+) {
+}

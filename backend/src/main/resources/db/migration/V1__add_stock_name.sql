@@ -1,0 +1,5 @@
+ALTER TABLE stocks ADD COLUMN IF NOT EXISTS name VARCHAR(255);
+
+UPDATE stocks SET name = 'Magazyn główny' WHERE name IS NULL;
+
+ALTER TABLE stocks ALTER COLUMN name SET NOT NULL;

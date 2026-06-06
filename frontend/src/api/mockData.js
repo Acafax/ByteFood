@@ -16,12 +16,25 @@ const mockData = {
     expirationTime: Date.now() + 86400000,
   },
   // Wariant z restauracją: restaurantId: 1
-  // Wariant bez restauracji: restaurantId: null
+  // Wariant bez restauracji (onboarding): restaurantId: null, role: 'MANAGER'
   '/auth/me': {
-    restaurantId: 1,
+    restaurantId: null,
     email: 'dev@example.com',
     username: 'Dev',
     role: 'MANAGER',
+  },
+  '/onboarding/restaurant': {
+    restaurantId: 99,
+    restaurantName: 'Mock Restaurant',
+    stockId: 99,
+    stockName: 'Mock Warehouse',
+  },
+  '/employees': {
+    id: 100,
+    email: 'employee@mock.com',
+    name: 'Jan',
+    lastName: 'Kowalski',
+    role: 'EMPLOYEE',
   },
   '/units': ['G', 'ML', 'PCS'],
   '/categories': ['BURGER', 'DRINK', 'SITE'],

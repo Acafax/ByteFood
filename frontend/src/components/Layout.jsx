@@ -7,7 +7,10 @@ import SidebarNavList from './SidebarNavList.jsx';
 import ikonkaBF from '../assets/ikonka.png';
 
 function Layout() {
-  const { user, logout } = useAuth();
+  const { user, role, logout } = useAuth();
+  const visibleMenuItems = MENU_ITEMS.filter(
+    (item) => !item.managerOnly || role === 'MANAGER',
+  );
   const navigate = useNavigate();
   const location = useLocation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -23,7 +26,7 @@ function Layout() {
   };
 
   const currentLabel =
-    MENU_ITEMS.find((item) => item.path === location.pathname)?.label || 'Panel główny';
+    visibleMenuItems.find((item) => item.path === location.pathname)?.label || 'Panel główny';
 
   return (
     <div className="min-h-screen w-full bg-slate-50 flex flex-col md:flex-row">
@@ -34,7 +37,7 @@ function Layout() {
         </div>
 
         <nav className="flex-1 p-4 overflow-y-auto">
-          <SidebarNavList items={MENU_ITEMS} onNavigate={handleNavClick} />
+          <SidebarNavList items={visibleMenuItems} onNavigate={handleNavClick} />
         </nav>
 
         <div className="p-4 border-t border-gray-200/80">
@@ -65,7 +68,7 @@ function Layout() {
             </div>
 
             <nav className="flex-1 p-4 overflow-y-auto">
-              <SidebarNavList items={MENU_ITEMS} onNavigate={handleNavClick} />
+              <SidebarNavList items={visibleMenuItems} onNavigate={handleNavClick} />
             </nav>
 
             <div className="p-4 border-t border-gray-200/80">

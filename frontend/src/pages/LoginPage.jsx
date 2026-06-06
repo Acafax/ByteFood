@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useStore } from 'react-redux';
 import { useAuth } from '../hooks/useAuth.js';
+import { getPostAuthPath } from '../utils/getPostAuthPath.js';
 import { Mail, Lock } from 'lucide-react';
 import FormField from '../components/ui/FormField.jsx';
 import AlertMessage from '../components/ui/AlertMessage.jsx';
@@ -11,6 +13,7 @@ function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const store = useStore();
   const { login } = useAuth();
 
   const handleLogin = async (e) => {
@@ -24,7 +27,7 @@ function LoginPage() {
 
     try {
       await login(email, password);
-      navigate('/dashboard');
+      navigate(getPostAuthPath(store.getState().auth));
     } catch (err) {
       setError('Logowanie nie powiodło się. Spróbuj ponownie.');
     }

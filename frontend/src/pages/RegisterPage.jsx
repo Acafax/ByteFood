@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useStore } from 'react-redux';
 import { useAuth } from '../hooks/useAuth.js';
+import { getPostAuthPath } from '../utils/getPostAuthPath.js';
 import { Mail, Lock, User } from 'lucide-react';
 import FormField from '../components/ui/FormField.jsx';
 import AlertMessage from '../components/ui/AlertMessage.jsx';
@@ -14,6 +16,7 @@ function RegisterPage() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const store = useStore();
   const { register } = useAuth();
 
   const handleRegister = async (e) => {
@@ -37,7 +40,7 @@ function RegisterPage() {
 
     try {
       await register(email, password, name, lastName);
-      navigate('/dashboard');
+      navigate(getPostAuthPath(store.getState().auth));
     } catch (err) {
       setError(err.message || 'Rejestracja nie powiodła się. Spróbuj ponownie.');
     }

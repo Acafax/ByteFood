@@ -86,7 +86,7 @@ public class AuthService {
         User user = new User(
                 registerRequest.email(),
                 encodedPassword,
-                UserRole.EMPLOYEE,
+                UserRole.MANAGER,
                 registerRequest.name(),
                 registerRequest.lastName()
         );

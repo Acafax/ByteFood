@@ -51,7 +51,16 @@ export const fetchCurrentUser = createAsyncThunk(
       const data = await get('/auth/me');
       return mapMeResponseToAuth(data);
     } catch (error) {
-      return rejectWithValue(error.message || 'Nie udało się pobrać danych użytkownika');
+      if (error.status === 409) {
+        return rejectWithValue({
+          code: 'ONBOARDING_REQUIRED',
+          message: error.message,
+        });
+      }
+      return rejectWithValue({
+        code: 'AUTH_FAILED',
+        message: error.message || 'Nie udało się pobrać danych użytkownika',
+      });
     }
   },
 );
@@ -111,7 +120,15 @@ const authSlice = createSlice({
         state.isLoading = false;
         saveAuthToStorage(action.payload);
       })
-      .addCase(fetchCurrentUser.rejected, (state) => {
+      .addCase(fetchCurrentUser.rejected, (state, action) => {
+        if (action.payload?.code === 'ONBOARDING_REQUIRED') {
+          state.role = 'MANAGER';
+          state.restaurantId = null;
+          state.userInfo = null;
+          state.isAuthenticated = true;
+          state.isLoading = false;
+          return;
+        }
         clearAuthStorage();
         Object.assign(state, initialState);
       })

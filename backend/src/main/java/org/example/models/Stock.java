@@ -22,6 +22,9 @@ public class Stock {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
+    private String name;
+
     @OneToOne(mappedBy = "restaurantStock")
     Restaurant restaurant;
 
