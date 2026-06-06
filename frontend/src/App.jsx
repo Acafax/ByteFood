@@ -11,7 +11,7 @@ import Magazyn from './pages/Magazyn';
 import CreateSemiProduct from './pages/CreateSemiProduct';
 import CreateModification from './pages/CreateModification';
 import CreateProduct from './pages/CreateProduct';
-import CreateSet from './pages/CreateSet';
+import CreateCombo from './pages/CreateCombo';
 import OnboardingRoute from './components/OnboardingRoute.jsx';
 import OnboardingPage from './pages/OnboardingPage.jsx';
 import WelcomeRoute from './components/WelcomeRoute.jsx';
@@ -40,7 +40,7 @@ function App() {
             <Route path="/create-semi-product" element={<CreateSemiProduct />} />
             <Route path="/create-modification" element={<CreateModification />} />
             <Route path="/create-product" element={<CreateProduct />} />
-            <Route path="/create-set" element={<CreateSet />} />
+            <Route path="/create-combo" element={<CreateCombo />} />
           </Route>
 
           <Route element={<ManagerRoute><Layout /></ManagerRoute>}>

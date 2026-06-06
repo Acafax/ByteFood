@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { get, post } from '../api/client.js';
+import { getSemiProducts, createSemiProduct } from '../api/semiProducts.js';
 
 /**
  * Shared hook for fetching the semi-products list.
@@ -14,7 +14,7 @@ export function useSemiProducts() {
     error: queryError,
   } = useQuery({
     queryKey: ['semi-products'],
-    queryFn: () => get('/semi-products'),
+    queryFn: getSemiProducts,
   });
 
   const error = isError ? (queryError?.message || 'Błąd podczas pobierania półproduktów') : '';
@@ -31,7 +31,7 @@ export function useCreateSemiProduct() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (requestBody) => post('/semi-products', requestBody),
+    mutationFn: createSemiProduct,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['semi-products'] });
     },

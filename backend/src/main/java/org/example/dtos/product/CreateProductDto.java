@@ -23,6 +23,8 @@ public record CreateProductDto(
 
         @NotEmpty(message = "Product must have at least one semi-product")
         @Valid
-        Set<CreateProductSemiProductsDto> productsSemiProducts
+        Set<CreateProductSemiProductsDto> productsSemiProducts,
+
+        String image
 ) {
 }

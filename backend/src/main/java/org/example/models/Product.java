@@ -37,7 +37,8 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ProductSemiProduct> semiProducts = new HashSet<>();
 
-    //TODO dodac zdjecia produktu jako kolumna
+    @Column(name = "image_path")
+    private String imagePath;
 
     @Column(name = "restaurant_id")
     private Long restaurantId;

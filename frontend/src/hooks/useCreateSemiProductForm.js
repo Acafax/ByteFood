@@ -1,5 +1,4 @@
 import { useState, useCallback } from 'react';
-import { useAuth } from './useAuth.js';
 import { useCreateSemiProduct } from './useSemiProduct.js';
 
 const INITIAL_FORM_DATA = {
@@ -8,6 +7,7 @@ const INITIAL_FORM_DATA = {
   fat: '',
   protein: '',
   unit: '',
+  subcategoryId: '',
   minimalStockQuantity: '',
 };
 
@@ -18,7 +18,6 @@ const SUCCESS_TIMEOUT_MS = 3000;
  * Field names match the backend CreateSemiProductDto.
  */
 export function useCreateSemiProductForm() {
-  const { user } = useAuth();
   const createSemiProductMutation = useCreateSemiProduct();
 
   const [formData, setFormData] = useState(INITIAL_FORM_DATA);
@@ -39,7 +38,15 @@ export function useCreateSemiProductForm() {
     setError('');
     setSuccess(false);
 
-    if (!formData.name || !formData.unit || !formData.fat || !formData.carbohydrate || !formData.protein) {
+    if (
+      !formData.name
+      || !formData.unit
+      || !formData.fat
+      || !formData.carbohydrate
+      || !formData.protein
+      || !formData.subcategoryId
+      || formData.minimalStockQuantity === ''
+    ) {
       setError('Proszę wypełnić wszystkie wymagane pola');
       return;
     }
@@ -53,14 +60,16 @@ export function useCreateSemiProductForm() {
       return;
     }
 
+    /** @type {import('../api/semiProducts.js').CreateSemiProductDto} */
     const requestBody = {
       name: formData.name,
-      carbohydrate: carbohydrate,
-      fat: fat,
-      protein: protein,
+      carbohydrate,
+      fat,
+      protein,
       unit: formData.unit,
-      minimalStockQuantity: parseFloat(formData.minimalStockQuantity)
-      };
+      subcategory: { id: parseInt(formData.subcategoryId, 10) },
+      minimalStockQuantity: parseFloat(formData.minimalStockQuantity),
+    };
 
     createSemiProductMutation.mutate(requestBody, {
       onSuccess: () => {
@@ -72,7 +81,7 @@ export function useCreateSemiProductForm() {
         setError(err.message || 'Wystąpił błąd podczas tworzenia półproduktu');
       },
     });
-  }, [formData, resetForm, user, createSemiProductMutation]);
+  }, [formData, resetForm, createSemiProductMutation]);
 
   return {
     formData,

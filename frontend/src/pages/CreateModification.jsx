@@ -1,11 +1,11 @@
 import React from 'react';
 import { Plus, Minus, Replace, Save } from 'lucide-react';
 import { useCreateModificationForm } from '../hooks/useCreateModificationForm.js';
-import { useCategories } from '../hooks/useCategories.js';
+import { useSubcategories } from '../hooks/useSubcategories.js';
 import AlertMessage from '../components/ui/AlertMessage.jsx';
 import LoadingSpinner from '../components/ui/LoadingSpinner.jsx';
 import FormField from '../components/ui/FormField.jsx';
-import SelectField from '../components/ui/SelectField.jsx';
+import SubcategorySelectField from '../components/subcategory/SubcategorySelectField.jsx';
 import SubmitButton from '../components/ui/SubmitButton.jsx';
 
 function CreateModification() {
@@ -24,7 +24,7 @@ function CreateModification() {
     resetForm,
   } = useCreateModificationForm();
 
-  const { categories } = useCategories();
+  const { subcategories, isLoading: subcategoriesLoading } = useSubcategories();
 
   if (loading) {
     return (
@@ -45,46 +45,43 @@ function CreateModification() {
       <AlertMessage variant="success" message={success ? 'Modyfikacja została pomyślnie utworzona!' : ''} />
 
       <form onSubmit={handleSubmit} className="space-y-8">
-        {/* Basic fields */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <FormField
-            label="Nazwa modyfikacji"
-            required
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleInputChange}
-            placeholder="np. Dodatkowy ser Cheddar"
-          />
+        <section>
+          <h3 className="text-lg font-bold text-slate-900 mb-4">Dane podstawowe</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <FormField
+              label="Nazwa modyfikacji"
+              required
+              type="text"
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
+              placeholder="np. Dodatkowy ser Cheddar"
+            />
 
-          <SelectField
-            label="Kategoria"
-            required
-            id="category"
-            name="category"
-            value={formData.category}
-            onChange={handleInputChange}
-            options={categories}
-            placeholder="Wybierz kategorię"
-          />
+            <SubcategorySelectField
+              value={formData.subcategoryId}
+              onChange={handleInputChange}
+              options={subcategories}
+              loading={subcategoriesLoading}
+            />
 
-          <FormField
-            label="Cena (PLN)"
-            required
-            type="number"
-            id="price"
-            name="price"
-            value={formData.price}
-            onChange={handleInputChange}
-            step="0.01"
-            min="0"
-            placeholder="0.00"
-          />
-        </div>
+            <FormField
+              label="Cena (PLN)"
+              required
+              type="number"
+              id="price"
+              name="price"
+              value={formData.price}
+              onChange={handleInputChange}
+              step="0.01"
+              min="0"
+              placeholder="0.00"
+            />
+          </div>
+        </section>
 
-        {/* Semi-products + action section */}
-        <div>
+        <section>
           <h3 className="text-xl font-bold text-slate-900 mb-2">Półprodukt i Akcja</h3>
           <p className="text-slate-500 font-medium mb-4">
             Wybierz półprodukt i akcję: Dodaj (+), Zamień (↔), Odejmij (-)
@@ -107,9 +104,8 @@ function CreateModification() {
               ))}
             </div>
           )}
-        </div>
+        </section>
 
-        {/* Actions */}
         <div className="flex justify-end gap-4 pt-4 border-t border-gray-200">
           <button
             type="button"
@@ -129,8 +125,6 @@ function CreateModification() {
   );
 }
 
-/* ─── Sub-components ─── */
-
 function ModificationCard({ semiProduct, mod, onActionSelect, onQuantityChange }) {
   const isActive = mod?.action !== null;
 
@@ -146,7 +140,6 @@ function ModificationCard({ semiProduct, mod, onActionSelect, onQuantityChange }
         {semiProduct.name}
       </h4>
 
-      {/* Action buttons */}
       <div className="flex gap-2 mb-3">
         <ActionButton
           active={mod?.action === 'add'}
@@ -171,7 +164,6 @@ function ModificationCard({ semiProduct, mod, onActionSelect, onQuantityChange }
         />
       </div>
 
-      {/* Quantity counter for add/remove */}
       {mod?.action && mod.action !== 'replace' && (
         <div className="flex items-center justify-between bg-white rounded-lg p-2 border border-gray-200">
           <button

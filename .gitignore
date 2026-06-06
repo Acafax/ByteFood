@@ -19,8 +19,8 @@ backend/*.log
 backend/.mvn/
 backend/mvnw
 backend/mvnw.cmd
-backend/src/main/resources/clean.sql
-backend/src/main/resources/db-init.sql
+backend/src/main/resources/db/clean.sql
+backend/src/main/resources/db/db-init.sql
 backend/src/test/resources/db-init.sql
 backend/src/test/resources/clean.sql
 

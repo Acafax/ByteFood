@@ -6,6 +6,7 @@ import AlertMessage from '../components/ui/AlertMessage.jsx';
 import LoadingSpinner from '../components/ui/LoadingSpinner.jsx';
 import FormField from '../components/ui/FormField.jsx';
 import SelectField from '../components/ui/SelectField.jsx';
+import ImageUploadField from '../components/ui/ImageUploadField.jsx';
 import SubmitButton from '../components/ui/SubmitButton.jsx';
 
 const LONG_PRESS_INITIAL_DELAY_MS = 400;
@@ -16,12 +17,16 @@ function CreateProduct() {
     formData,
     semiProducts,
     quantities,
+    imageFile,
+    imagePreview,
     loading,
     submitting,
     error,
     success,
     handleInputChange,
     handleQuantityChange,
+    handleImageChange,
+    handleImageError,
     handleSubmit,
     resetForm,
   } = useCreateProductForm();
@@ -47,46 +52,57 @@ function CreateProduct() {
       <AlertMessage variant="success" message={success ? 'Produkt został pomyślnie utworzony!' : ''} />
 
       <form onSubmit={handleSubmit} className="space-y-8">
-        {/* Basic fields */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <FormField
-            label="Nazwa produktu"
-            required
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleInputChange}
-            placeholder="np. Pizza Margherita"
+        <section>
+          <h3 className="text-lg font-bold text-slate-900 mb-4">Zdjęcie produktu</h3>
+          <ImageUploadField
+            file={imageFile}
+            previewUrl={imagePreview}
+            onFileChange={handleImageChange}
+            onError={handleImageError}
           />
+        </section>
 
-          <SelectField
-            label="Kategoria"
-            required
-            id="category"
-            name="category"
-            value={formData.category}
-            onChange={handleInputChange}
-            options={categories}
-            placeholder="Wybierz kategorię"
-          />
+        <section>
+          <h3 className="text-lg font-bold text-slate-900 mb-4">Dane podstawowe</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <FormField
+              label="Nazwa produktu"
+              required
+              type="text"
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
+              placeholder="np. Pizza Margherita"
+            />
 
-          <FormField
-            label="Cena (PLN)"
-            required
-            type="number"
-            id="price"
-            name="price"
-            value={formData.price}
-            onChange={handleInputChange}
-            step="0.01"
-            min="0.01"
-            placeholder="0.00"
-          />
-        </div>
+            <SelectField
+              label="Kategoria"
+              required
+              id="category"
+              name="category"
+              value={formData.category}
+              onChange={handleInputChange}
+              options={categories}
+              placeholder="Wybierz kategorię"
+            />
 
-        {/* Semi-products section */}
-        <div>
+            <FormField
+              label="Cena (PLN)"
+              required
+              type="number"
+              id="price"
+              name="price"
+              value={formData.price}
+              onChange={handleInputChange}
+              step="0.01"
+              min="0.01"
+              placeholder="0.00"
+            />
+          </div>
+        </section>
+
+        <section>
           <h3 className="text-xl font-bold text-slate-900 mb-2">Składniki (Półprodukty)</h3>
           <p className="text-slate-500 font-medium mb-4">Wybierz składniki i określ ich ilość dla produktu</p>
 
@@ -106,9 +122,8 @@ function CreateProduct() {
               ))}
             </div>
           )}
-        </div>
+        </section>
 
-        {/* Actions */}
         <div className="flex justify-end gap-4 pt-4 border-t border-gray-200">
           <button
             type="button"
@@ -128,19 +143,14 @@ function CreateProduct() {
   );
 }
 
-/* ─── Sub-component with long-press support ─── */
-
 function SemiProductQuantityCard({ semiProduct, quantity, onQuantityChange }) {
   const intervalRef = useRef(null);
   const timeoutRef = useRef(null);
 
-  // Quantities in the product form are always in grams
   const unitLabel = 'g';
 
   const startLongPress = useCallback((delta) => {
-    // Immediate first tick
     onQuantityChange(semiProduct.id, delta);
-    // After initial delay, start repeating
     timeoutRef.current = setTimeout(() => {
       intervalRef.current = setInterval(() => {
         onQuantityChange(semiProduct.id, delta);

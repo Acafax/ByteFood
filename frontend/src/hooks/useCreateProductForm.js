@@ -6,6 +6,20 @@ const INITIAL_FORM_DATA = { name: '', category: '', price: '' };
 const SUCCESS_TIMEOUT_MS = 3000;
 
 /**
+ * Converts a File to base64 data URL for the CreateProductDto.image field.
+ * @param {File} file
+ * @returns {Promise<string>}
+ */
+function fileToDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(new Error('Nie udało się odczytać pliku'));
+    reader.readAsDataURL(file);
+  });
+}
+
+/**
  * Hook encapsulating all business logic for the "Create Product" form.
  */
 export function useCreateProductForm() {
@@ -19,10 +33,11 @@ export function useCreateProductForm() {
 
   const [formData, setFormData] = useState(INITIAL_FORM_DATA);
   const [quantities, setQuantities] = useState({});
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
 
-  // Initialise quantities map once semi-products are loaded
   useEffect(() => {
     if (semiProducts.length === 0) return;
     const initial = {};
@@ -30,7 +45,6 @@ export function useCreateProductForm() {
     setQuantities(initial);
   }, [semiProducts]);
 
-  // Propagate fetch error
   useEffect(() => {
     if (fetchError) setError(fetchError);
   }, [fetchError]);
@@ -48,12 +62,29 @@ export function useCreateProductForm() {
     });
   }, []);
 
+  const handleImageChange = useCallback((file, previewUrl) => {
+    if (imagePreview) {
+      URL.revokeObjectURL(imagePreview);
+    }
+    setImageFile(file);
+    setImagePreview(previewUrl);
+  }, [imagePreview]);
+
+  const handleImageError = useCallback((message) => {
+    setError(message);
+  }, []);
+
   const resetForm = useCallback(() => {
     setFormData(INITIAL_FORM_DATA);
     const reset = {};
     semiProducts.forEach((sp) => { reset[sp.id] = 0; });
     setQuantities(reset);
-  }, [semiProducts]);
+    if (imagePreview) {
+      URL.revokeObjectURL(imagePreview);
+    }
+    setImageFile(null);
+    setImagePreview(null);
+  }, [semiProducts, imagePreview]);
 
   const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
@@ -79,11 +110,23 @@ export function useCreateProductForm() {
       return;
     }
 
+    let image;
+    if (imageFile) {
+      try {
+        image = await fileToDataUrl(imageFile);
+      } catch {
+        setError('Nie udało się przetworzyć zdjęcia');
+        return;
+      }
+    }
+
+    /** @type {import('../api/products.js').CreateProductDto} */
     const requestBody = {
       name: formData.name,
       category: formData.category,
       price: parseFloat(formData.price),
       productsSemiProducts: selectedSemiProducts,
+      ...(image && { image }),
     };
 
     createProductMutation.mutate(requestBody, {
@@ -96,18 +139,22 @@ export function useCreateProductForm() {
         setError(err.message || 'Wystąpił błąd podczas tworzenia produktu');
       },
     });
-  }, [formData, quantities, resetForm, createProductMutation]);
+  }, [formData, quantities, imageFile, resetForm, createProductMutation]);
 
   return {
     formData,
     semiProducts,
     quantities,
+    imageFile,
+    imagePreview,
     loading: semiProductsLoading,
     submitting: createProductMutation.isPending,
     error,
     success,
     handleInputChange,
     handleQuantityChange,
+    handleImageChange,
+    handleImageError,
     handleSubmit,
     resetForm,
   };

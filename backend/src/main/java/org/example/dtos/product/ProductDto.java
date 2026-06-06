@@ -4,5 +4,5 @@ import org.example.models.Product;
 
 import java.math.BigDecimal;
 
-public record ProductDto(Long id, String name, String category, BigDecimal price, Long restaurantId) {
+public record ProductDto(Long id, String name, String category, BigDecimal price, Long restaurantId, String imagePath) {
 }

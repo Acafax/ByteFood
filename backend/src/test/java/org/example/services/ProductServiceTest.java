@@ -308,7 +308,8 @@ class ProductServiceTest {
                      "New Product",
                     "BURGER",
                     new BigDecimal("100"),
-                    Set.of(new CreateProductSemiProductsDto(1L, BigDecimal.ONE)));
+                    Set.of(new CreateProductSemiProductsDto(1L, BigDecimal.ONE)),
+                    null);
 
             mappedProduct = new Product();
             mappedProduct.setName("New Product");
@@ -316,7 +317,7 @@ class ProductServiceTest {
             mappedProduct.setPrice(new BigDecimal("100"));
             mappedProduct.setSemiProducts(new HashSet<>());
 
-            savedProductDto = new ProductDto(savedProductId, "New Product", "BURGER", new BigDecimal("100"), 1L);
+            savedProductDto = new ProductDto(savedProductId, "New Product", "BURGER", new BigDecimal("100"), 1L, ProductService.DEFAULT_PRODUCT_IMAGE);
             savedProduct = new Product(savedProductId, "New Product", "BURGER", new BigDecimal("100"), 1L);
         }
 

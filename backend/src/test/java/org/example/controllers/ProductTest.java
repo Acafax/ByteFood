@@ -304,7 +304,8 @@ class ProductTest extends IntegrationTestBase {
 
                     .statusCode(201)
                 .body("name", equalTo("testBurger"))
-                .body("category", equalTo("BURGER"));
+                .body("category", equalTo("BURGER"))
+                .body("imagePath", equalTo("default_product_image.png"));
         }
 
         @Test

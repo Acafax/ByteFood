@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 @Service
 public class ProductService {
 
+    public static final String DEFAULT_PRODUCT_IMAGE = "default_product_image.png";
 
     private final ProductRepository productRepository;
     private final ProductDtoMapper productDtoMapper;
@@ -137,6 +138,7 @@ public class ProductService {
     public ProductDto createProduct(CreateProductDto createProductDto) {
         Long currentRestaurantId = customUserDetailsService.getCurrentRestaurantId();
         Product product = productDtoMapper.mapToProduct(createProductDto, currentRestaurantId);
+        product.setImagePath(resolveImagePath(createProductDto.image()));
 
         createProductDto.productsSemiProducts().forEach(productSemiProduct -> {
             SemiProduct semiProduct = semiProductService.getById(productSemiProduct.semiProductId());
@@ -196,6 +198,13 @@ public class ProductService {
 
     }
 
+
+    private String resolveImagePath(String image) {
+        if (image == null || image.isBlank()) {
+            return DEFAULT_PRODUCT_IMAGE;
+        }
+        return image;
+    }
 
     private void handleNullParameter(Object object, String message){
         if (object == null) {

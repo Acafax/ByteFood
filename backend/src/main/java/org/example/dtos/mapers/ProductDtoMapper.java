@@ -30,7 +30,8 @@ public class ProductDtoMapper {
                 product.getName(),
                 product.getCategory(),
                 product.getPrice(),
-                product.getRestaurantId()
+                product.getRestaurantId(),
+                product.getImagePath()
         );
 
     }
@@ -65,7 +66,8 @@ public class ProductDtoMapper {
                 productProjection.getName(),
                 productProjection.getCategory(),
                 productProjection.getPrice(),
-                productProjection.getRestaurantId()
+                productProjection.getRestaurantId(),
+                null
         );
     }
 

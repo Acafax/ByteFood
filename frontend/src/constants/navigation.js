@@ -7,5 +7,5 @@ export const MENU_ITEMS = [
   { path: '/create-semi-product', icon: null, label: 'Tworzenie półproduktu' },
   { path: '/create-modification', icon: null, label: 'Tworzenie modyfikacji' },
   { path: '/create-product', icon: null, label: 'Tworzenie produktu' },
-  { path: '/create-set', icon: null, label: 'Tworzenie zestawu' },
+  { path: '/create-combo', icon: null, label: 'Tworzenie zestawu' },
 ];

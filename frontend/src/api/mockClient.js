@@ -1,4 +1,4 @@
-import mockData from './mockData.js';
+import mockData, { mockHandlers } from './mockData.js';
 
 /** Simulate network latency */
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -8,6 +8,14 @@ const MOCK_DELAY_RANGE = 300;
 
 let mockOnboardingRestaurantId = null;
 
+const POST_HANDLERS = {
+  '/products': mockHandlers.postProducts,
+  '/subcategory': mockHandlers.postSubcategory,
+  '/modifications': mockHandlers.postModifications,
+  '/combos': mockHandlers.postCombos,
+  '/semi-products': mockHandlers.postSemiProducts,
+};
+
 /**
  * Mock API client – returns predefined responses from mockData.
  */
@@ -15,8 +23,9 @@ const mockApiClient = async (endpoint, options = {}) => {
   await delay(MOCK_DELAY_MIN + Math.random() * MOCK_DELAY_RANGE);
 
   const normalizedEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  const method = options.method || 'GET';
 
-  if (normalizedEndpoint === '/onboarding/restaurant' && options.method === 'POST') {
+  if (normalizedEndpoint === '/onboarding/restaurant' && method === 'POST') {
     const body = options.body ? JSON.parse(options.body) : {};
     mockOnboardingRestaurantId = 99;
     return {
@@ -27,7 +36,7 @@ const mockApiClient = async (endpoint, options = {}) => {
     };
   }
 
-  if (normalizedEndpoint === '/auth/me' && options.method === 'GET') {
+  if (normalizedEndpoint === '/auth/me' && method === 'GET') {
     return {
       restaurantId: mockOnboardingRestaurantId,
       email: 'dev@example.com',
@@ -36,10 +45,12 @@ const mockApiClient = async (endpoint, options = {}) => {
     };
   }
 
-  // Exact match first
+  if (method === 'POST' && POST_HANDLERS[normalizedEndpoint]) {
+    return POST_HANDLERS[normalizedEndpoint](options.body);
+  }
+
   let mockResponse = mockData[normalizedEndpoint];
 
-  // Prefix match fallback
   if (mockResponse === undefined) {
     for (const [key, value] of Object.entries(mockData)) {
       if (normalizedEndpoint.startsWith(key)) {
@@ -49,8 +60,7 @@ const mockApiClient = async (endpoint, options = {}) => {
     }
   }
 
-  // For write operations return generic success when no mock exists
-  if (mockResponse === undefined && ['POST', 'PUT', 'DELETE'].includes(options.method)) {
+  if (mockResponse === undefined && ['POST', 'PUT', 'DELETE'].includes(method)) {
     return {
       success: true,
       message: 'Mock operation successful',
@@ -58,7 +68,6 @@ const mockApiClient = async (endpoint, options = {}) => {
     };
   }
 
-  // For GET return empty collection when no mock exists
   if (mockResponse === undefined) {
     return {};
   }

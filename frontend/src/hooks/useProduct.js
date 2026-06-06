@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { get, post } from '../api/client.js';
+import { createProduct, getProducts } from '../api/products.js';
 
 /**
  * Fetches the list of products from the API.
@@ -8,7 +8,7 @@ import { get, post } from '../api/client.js';
 export function useProducts() {
   const { data: products = [], isLoading, isError, error } = useQuery({
     queryKey: ['products'],
-    queryFn: () => get('/products'),
+    queryFn: getProducts,
   });
 
   return { products, isLoading, isError, error };
@@ -23,7 +23,7 @@ export function useCreateProduct() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (requestBody) => post('/products', requestBody),
+    mutationFn: createProduct,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['products'] });
       queryClient.invalidateQueries({ queryKey: ['semi-products'] });

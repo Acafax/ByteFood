@@ -32,6 +32,12 @@ public class ProductController {
         this.productService = productService;
     }
 
+    @GetMapping()
+    ResponseEntity<List<ProductDto>> getAllProducts() {
+        List<ProductDto> products = productService.getAllProducts();
+        return ResponseEntity.ok(products);
+    }
+
     @GetMapping("/{id}/with-semi")
     ResponseEntity<ProductDtoWithSemiProducts> getProductWithSemiProductsById(@PathVariable Long id){
         ProductDtoWithSemiProducts productById = productService.getProductWithSemiProductsById(id);

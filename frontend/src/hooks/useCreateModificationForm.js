@@ -1,24 +1,26 @@
 import { useState, useCallback, useEffect } from 'react';
-import { post } from '../api/client.js';
+import { useMutation } from '@tanstack/react-query';
+import { createModification } from '../api/modifications.js';
 import { useSemiProducts } from './useSemiProduct.js';
 
-const INITIAL_FORM_DATA = { name: '', category: '', price: '' };
+const INITIAL_FORM_DATA = { name: '', subcategoryId: '', price: '' };
 const SUCCESS_TIMEOUT_MS = 3000;
 
 /**
  * Hook encapsulating all business logic for the "Create Modification" form.
- * Uses the TanStack-Query-based useSemiProducts for data fetching.
  */
 export function useCreateModificationForm() {
   const { semiProducts, loading: semiProductsLoading, error: fetchError } = useSemiProducts();
 
+  const createModificationMutation = useMutation({
+    mutationFn: createModification,
+  });
+
   const [formData, setFormData] = useState(INITIAL_FORM_DATA);
   const [modifications, setModifications] = useState({});
-  const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
 
-  // Initialise modifications map once semi-products are loaded
   useEffect(() => {
     if (semiProducts.length === 0) return;
     const initial = {};
@@ -26,7 +28,6 @@ export function useCreateModificationForm() {
     setModifications(initial);
   }, [semiProducts]);
 
-  // Propagate fetch error
   useEffect(() => {
     if (fetchError) setError(fetchError);
   }, [fetchError]);
@@ -38,7 +39,6 @@ export function useCreateModificationForm() {
 
   const handleActionSelect = useCallback((id, action) => {
     setModifications((prev) => {
-      // Reset all semi-products, then toggle the selected one
       const reset = {};
       Object.keys(prev).forEach((key) => {
         reset[key] = { action: null, quantity: 0 };
@@ -77,7 +77,7 @@ export function useCreateModificationForm() {
     setError('');
     setSuccess(false);
 
-    if (!formData.name || !formData.category || formData.price === '') {
+    if (!formData.name || !formData.subcategoryId || formData.price === '') {
       setError('Proszę wypełnić wszystkie wymagane pola');
       return;
     }
@@ -93,32 +93,32 @@ export function useCreateModificationForm() {
 
     const [semiProductId, modData] = selectedModification;
 
+    /** @type {import('../api/modifications.js').CreateModificationTemplateDto} */
     const requestBody = {
       name: formData.name,
-      category: formData.category,
       price: parseFloat(formData.price),
+      subcategory: { id: parseInt(formData.subcategoryId, 10) },
       semiProductId: modData.action === 'replace' ? null : parseInt(semiProductId, 10),
     };
 
-    setSubmitting(true);
-    try {
-      await post('/modification/', requestBody);
-      setSuccess(true);
-      resetForm();
-      setTimeout(() => setSuccess(false), SUCCESS_TIMEOUT_MS);
-    } catch (err) {
-      setError(err.message || 'Wystąpił błąd podczas tworzenia modyfikacji');
-    } finally {
-      setSubmitting(false);
-    }
-  }, [formData, modifications, resetForm]);
+    createModificationMutation.mutate(requestBody, {
+      onSuccess: () => {
+        setSuccess(true);
+        resetForm();
+        setTimeout(() => setSuccess(false), SUCCESS_TIMEOUT_MS);
+      },
+      onError: (err) => {
+        setError(err.message || 'Wystąpił błąd podczas tworzenia modyfikacji');
+      },
+    });
+  }, [formData, modifications, resetForm, createModificationMutation]);
 
   return {
     formData,
     semiProducts,
     modifications,
     loading: semiProductsLoading,
-    submitting,
+    submitting: createModificationMutation.isPending,
     error,
     success,
     handleInputChange,
