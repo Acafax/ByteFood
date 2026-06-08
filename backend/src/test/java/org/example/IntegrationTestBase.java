@@ -6,9 +6,12 @@ import io.restassured.config.ObjectMapperConfig;
 import io.restassured.config.RestAssuredConfig;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
+import org.example.kafka.KafkaScheduler;
+import org.example.kafka.StockEventListener;
 import org.example.security.JwtService;
 import org.example.security.SecurityUser;
 import org.example.security.UserRole;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,7 @@ import org.springframework.boot.testcontainers.service.connection.ServiceConnect
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -29,7 +33,7 @@ import org.testcontainers.utility.DockerImageName;
 import java.security.SecureRandom;
 import java.util.Base64;
 
-@Testcontainers
+//@Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @Sql(scripts = {"/clean.sql", "/db-init.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -38,7 +42,13 @@ public abstract class IntegrationTestBase {
     @Autowired
     JwtService jwtService;
 
-    @Container
+    @MockitoBean
+    private KafkaScheduler kafkaScheduler;
+
+    @MockitoBean
+    private StockEventListener stockEventListener;
+
+    //@Container
     @ServiceConnection
     protected static final PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16-alpine")
             .withDatabaseName("dbname")
@@ -60,12 +70,13 @@ public abstract class IntegrationTestBase {
 
     @DynamicPropertySource
     static void configureProperties(DynamicPropertyRegistry registry){
-        registry.add("spring.datasource.url", postgres::getJdbcUrl);
-        registry.add("spring.datasource.username", postgres::getUsername);
-        registry.add("spring.datasource.password", postgres::getPassword);
+//        registry.add("spring.datasource.url", postgres::getJdbcUrl);
+//        registry.add("spring.datasource.username", postgres::getUsername);
+//        registry.add("spring.datasource.password", postgres::getPassword);
         registry.add("spring.jpa.hibernate.ddl-auto", () -> "create-drop");
         registry.add("spring.sql.init.mode", () -> "never");
         registry.add("spring.security.jwt.secret-key", () -> TEST_JWT_SECRET);
+        registry.add("spring.kafka.listener.auto-startup", () -> "false");
     }
 
     @BeforeEach
