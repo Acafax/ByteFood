@@ -26,6 +26,15 @@ jobs:
           distribution: 'temurin'
       - name: Give execute permission to mvnw
         run: chmod +x mvnw
+      - name: Create test SQL files from secrets
+        env:
+          CLEAN_SQL: ${{ secrets.TEST_CLEAN_SQL_B64 }}
+          DB_INIT_SQL: ${{ secrets.TEST_DB_INIT_SQL_B64 }}
+        run: |
+          mkdir -p src/test/resources
+          echo "$CLEAN_SQL" | base64 -d > src/test/resources/clean.sql
+          echo "$DB_INIT_SQL" | base64 -d > src/test/resources/db-init.sql
+
       - name: Run Tests
         run: ./mvnw clean test
       - name: Upload test report
