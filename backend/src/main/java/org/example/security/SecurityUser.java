@@ -1,6 +1,8 @@
 package org.example.security;
 
 import org.example.repositories.projections.UserProjection;
+import org.example.util.exceptionsHandler.UserDoesNotHaveRestaurant;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -79,6 +81,18 @@ public class SecurityUser implements UserDetails {
 
     public Optional<Long> getRestaurantId() {
         return restaurantId;
+    }
+
+    public void verifyIfUserHasRestaurant() {
+        if (this.getRestaurantId().isEmpty()) {
+            throw new UserDoesNotHaveRestaurant();
+        }
+    }
+
+    public void verifyIfUserIsManager() {
+        if(!UserRole.MANAGER.equals(this.getRole())){
+            throw new AccessDeniedException("Only managers can create employees");
+        }
     }
 
 

@@ -10,6 +10,7 @@ import org.example.security.CustomUserDetailsService;
 import org.example.security.SecurityUser;
 import org.example.security.UserRole;
 import org.example.util.exceptionsHandler.UserAlreadyExistException;
+import org.example.util.exceptionsHandler.UserDoesNotHaveRestaurant;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -39,12 +40,10 @@ public class EmployeeService {
     public EmployeeResponse createEmployee(CreateEmployeeRequest request) {
         SecurityUser currentUser = customUserDetailsService.getCurrentUser();
 
-        if (!UserRole.MANAGER.equals(currentUser.getRole())) {
-            throw new AccessDeniedException("Only managers can create employees");
-        }
+        currentUser.verifyIfUserIsManager();
 
         Long restaurantId = currentUser.getRestaurantId()
-                .orElseThrow(() -> new AccessDeniedException("Manager must have a restaurant assigned"));
+                .orElseThrow(UserDoesNotHaveRestaurant::new);
 
         if (customUserDetailsService.userExistWithThisEmail(request.email())) {
             throw new UserAlreadyExistException(request.email());
