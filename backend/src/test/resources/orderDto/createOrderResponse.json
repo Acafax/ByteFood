@@ -63,7 +63,11 @@
             "id": 1,
             "name": "Dodatkowy ser Cheddar",
             "price": 4.00,
-            "category": "BURGER",
+            "subcategory": {
+              "id": 3,
+              "subcategoryName": "cheeses",
+              "restaurantId": 1
+            },
             "semiProductId": 10,
             "restaurantId": 1
           },
@@ -106,7 +110,11 @@
                   "id": 1,
                   "name": "Dodatkowy ser Cheddar",
                   "price": 4.00,
-                  "category": "BURGER",
+                  "subcategory": {
+                    "id": 3,
+                    "subcategoryName": "cheeses",
+                    "restaurantId": 1
+                  },
                   "semiProductId": 10,
                   "restaurantId": 1
                 },

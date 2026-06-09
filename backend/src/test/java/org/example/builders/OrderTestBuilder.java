@@ -39,7 +39,7 @@ public class OrderTestBuilder {
         orderProduct.setProduct(product);
 
         ModificationTemplate modificationTemplate = new ModificationTemplate();
-        modificationTemplate.setId(3L);
+        modificationTemplate.setId(modificationId);
 
         OrderItemModification orderItemModification = new OrderItemModification();
         orderItemModification.setModificationTemplate(modificationTemplate);

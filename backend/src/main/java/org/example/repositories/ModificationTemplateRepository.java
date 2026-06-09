@@ -14,7 +14,7 @@ import java.util.Set;
 @Repository
 public interface ModificationTemplateRepository extends JpaRepository<ModificationTemplate, Long> {
 
-    @Query(" SELECT m.id AS id, m.name AS name, m.price AS price, m.subcategory AS category, sp.id AS semiProductId ,m.restaurantId AS restaurantId " +
+    @Query(" SELECT m.id AS id, m.name AS name, m.price AS price, m.subcategory AS subcategory, sp.id AS semiProductId ,m.restaurantId AS restaurantId " +
            "FROM ModificationTemplate m " +
             "LEFT JOIN m.semiProduct sp " +
            "WHERE m.id IN :ids")
@@ -26,7 +26,7 @@ public interface ModificationTemplateRepository extends JpaRepository<Modificati
            "WHERE m.restaurantId = :restaurantId")
     List<ModificationTemplate> findAllWithSemiProductByRestaurantId(@Param("restaurantId") Long restaurantId);
 
-    @Query(" SELECT m.id AS id, m.name AS name, m.price AS price, m.subcategory AS category, sp.id AS semiProductId ,m.restaurantId AS restaurantId " +
+    @Query(" SELECT m.id AS id, m.name AS name, m.price AS price, m.subcategory AS subcategory, sp.id AS semiProductId ,m.restaurantId AS restaurantId " +
             "FROM ModificationTemplate m " +
             "LEFT JOIN m.semiProduct sp " +
             "WHERE m.id =:id")

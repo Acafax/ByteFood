@@ -1,39 +1,61 @@
 package org.example.dtos.assemblers;
+
 import org.example.dtos.mapers.OrderDTOMapper;
-import org.example.models.*;
+import org.example.dtos.product.ProductWithSemiProductIdDto;
+import org.example.models.Order;
 import org.example.repositories.ComboRepository;
 import org.example.repositories.ModificationTemplateRepository;
-import org.example.repositories.projections.ProductProjection;
 import org.example.services.ProductService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 
-import static org.example.builders.OrderTestBuilder.*;
+import static org.example.builders.OrderTestBuilder.order;
+import static org.example.builders.ProductWithSemiProductIdDtoTestBuilder.forIds;
+import static org.example.builders.ProductWithSemiProductIdDtoTestBuilder.productWithSemiIds;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(MockitoExtension.class)
 class OrderAssemblerTest {
 
+    private static final Set<Long> COMBO_PRODUCT_IDS = Set.of(2L, 12L, 18L);
+
     @Mock ComboRepository comboRepository;
     @Mock ModificationTemplateRepository modificationTemplateRepository;
     @Mock ProductService productService;
-
-    // ZMOCKOWANY MAPPER! To jest klucz do sukcesu.
     @Mock OrderDTOMapper orderDTOMapper;
 
     @InjectMocks
     OrderAssembler orderAssembler;
+
+    @Captor
+    ArgumentCaptor<Map<Long, ProductWithSemiProductIdDto>> productsMapCaptor;
+
+    @BeforeEach
+    void stubEmptyComboAndModificationLookups() {
+        when(comboRepository.findCombosByIds(any())).thenReturn(Set.of());
+        when(modificationTemplateRepository.findModificationTemplateByIds(any())).thenReturn(Set.of());
+    }
+
+    private void stubProductsByIds(Long... productIds) {
+        Set<Long> ids = Set.copyOf(Arrays.asList(productIds));
+        when(productService.findProductWithSemiProductsIdByIds(ids)).thenReturn(forIds(productIds));
+    }
 
     @Test
     @DisplayName("Should assemble order DTO by fetching dependencies and passing to mapper")
@@ -43,15 +65,11 @@ class OrderAssemblerTest {
                 .withCombo(10L, 12L, 18L)
                 .build();
 
-        when(productService.findProductByIds(Set.of(2L,12L, 18L))).thenReturn(Set.of());
-        when(comboRepository.findCombosByIds(Set.of(10L))).thenReturn(Set.of());
-        when(modificationTemplateRepository.findModificationTemplateByIds(any())).thenReturn(Set.of());
+        stubProductsByIds(2L, 12L, 18L);
 
-        // when
         orderAssembler.assembleOrderDto(order);
 
-        //then
-        verify(productService).findProductByIds(Set.of(2L,12L, 18L));
+        verify(productService).findProductWithSemiProductsIdByIds(COMBO_PRODUCT_IDS);
         verify(comboRepository).findCombosByIds(Set.of(10L));
     }
 
@@ -59,45 +77,37 @@ class OrderAssemblerTest {
     @DisplayName("Should correctly map modification template in combo product")
     void shouldCorrectlyMapProductModificationInCombo() {
         Order order = order()
-                .withProductWithModification(2L,3L)
-                .withComboWithModificationInFirstProduct(10L,1L  ,12L, 18L)
+                .withProductWithModification(2L, 3L)
+                .withComboWithModificationInFirstProduct(10L, 1L, 12L, 18L)
                 .build();
 
-        // when
+        stubProductsByIds(2L, 12L, 18L);
+
         orderAssembler.assembleOrderDto(order);
 
-        //then
-        verify(productService).findProductByIds(Set.of(2L,12L,18L));
-        verify(modificationTemplateRepository).findModificationTemplateByIds(Set.of(1L,3L));
+        verify(productService).findProductWithSemiProductsIdByIds(COMBO_PRODUCT_IDS);
+        verify(modificationTemplateRepository).findModificationTemplateByIds(Set.of(1L, 3L));
     }
 
     @Test
     @DisplayName("Should correctly map database Projections to ID-based Maps")
-    void shouldCorrectlyMapDatabaseProjections(){
-        //given
+    void shouldCorrectlyMapDatabaseProjections() {
         Order order = order().withProduct(99L).build();
+        ProductWithSemiProductIdDto expectedProduct = productWithSemiIds()
+                .withId(99L)
+                .withName("Product 99")
+                .build();
 
-        ProductProjection projection = mock(ProductProjection.class);
-        lenient().when(projection.getId()).thenReturn(99L);
+        when(productService.findProductWithSemiProductsIdByIds(Set.of(99L)))
+                .thenReturn(forIds(99L));
 
-        when(productService.findProductByIds(Set.of(99L))).thenReturn(Set.of(projection));
-        when(comboRepository.findCombosByIds(any())).thenReturn(Set.of());
-        when(modificationTemplateRepository.findModificationTemplateByIds(any())).thenReturn(Set.of());
-
-        var mapCaptor = ArgumentCaptor.forClass(Map.class);
-
-        //when
         orderAssembler.assembleOrderDto(order);
 
-        //then
-        verify(orderDTOMapper).mapToOrderDto(eq(order),mapCaptor.capture(), any(), any());
+        verify(orderDTOMapper).mapToOrderDto(eq(order), productsMapCaptor.capture(), any(), any());
 
-        Map<Long,ProductProjection> value = mapCaptor.getValue();
+        Map<Long, ProductWithSemiProductIdDto> productsById = productsMapCaptor.getValue();
 
-        assertTrue(value.containsKey(99L));
-        assertEquals(projection, value.get(99L));
+        assertTrue(productsById.containsKey(99L));
+        assertEquals(expectedProduct, productsById.get(99L));
     }
-
-
-
 }

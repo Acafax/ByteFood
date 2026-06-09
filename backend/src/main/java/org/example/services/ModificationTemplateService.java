@@ -7,10 +7,11 @@ import org.example.dtos.modification.ModificationTemplateDto;
 import org.example.dtos.modification.PatchModificationTemplateDTO;
 import org.example.models.ModificationTemplate;
 import org.example.models.SemiProduct;
+import org.example.models.Subcategory;
 import org.example.repositories.ModificationTemplateRepository;
+import org.example.repositories.SubcategoryRepository;
 import org.example.repositories.projections.ModificationTemplateProjection;
 import org.example.security.CustomUserDetailsService;
-import org.hibernate.annotations.Check;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -25,12 +26,14 @@ public class ModificationTemplateService {
     private final ModificationTemplateRepository modificationTemplateRepository;
     private final CustomUserDetailsService customUserDetailsService;
     private final SemiProductService semiProductService;
+    private final SubcategoryRepository subcategoryRepository;
 
-    public ModificationTemplateService(ModificationTemplateDtoMapper modificationTemplateDtoMapper, ModificationTemplateRepository modificationTemplateRepository, CustomUserDetailsService customUserDetailsService, SemiProductService semiProductService) {
+    public ModificationTemplateService(ModificationTemplateDtoMapper modificationTemplateDtoMapper, ModificationTemplateRepository modificationTemplateRepository, CustomUserDetailsService customUserDetailsService, SemiProductService semiProductService, SubcategoryRepository subcategoryRepository) {
         this.modificationTemplateDtoMapper = modificationTemplateDtoMapper;
         this.modificationTemplateRepository = modificationTemplateRepository;
         this.customUserDetailsService = customUserDetailsService;
         this.semiProductService = semiProductService;
+        this.subcategoryRepository = subcategoryRepository;
     }
 
     public List<ModificationTemplateDto> getRestaurantModificationTemplates() {
@@ -54,6 +57,7 @@ public class ModificationTemplateService {
     @PreAuthorize("@securityService.isManager()")
     public ModificationTemplateDto createModificationTemplate(CreateModificationTemplateDTO modificationTemplate) {
         ModificationTemplate modificationToCreate = modificationTemplateDtoMapper.mapToEntity(modificationTemplate);
+        modificationToCreate.setSubcategory(resolveSubcategory(modificationTemplate.subcategory()));
 
         SemiProduct semiProduct;
         if (modificationTemplate.semiProductId() != null){
@@ -85,7 +89,7 @@ public class ModificationTemplateService {
             modificationTemplateById.setPrice(modificationTemplate.price());
         }
         if (modificationTemplate.subcategory() != null){
-            modificationTemplateById.setSubcategory(modificationTemplate.subcategory());
+            modificationTemplateById.setSubcategory(resolveSubcategory(modificationTemplate.subcategory()));
         }
         if (modificationTemplate.semiProductId() != null){
             SemiProduct semiProduct = semiProductService.getById(modificationTemplate.semiProductId());
@@ -112,5 +116,17 @@ public class ModificationTemplateService {
         modificationTemplateRepository.delete(modificationTemplate);
 
         return dto;
+    }
+
+    private Subcategory resolveSubcategory(Subcategory subcategoryRef) {
+        if (subcategoryRef == null || subcategoryRef.getId() == null) {
+            return null;
+        }
+
+        Subcategory subcategory = subcategoryRepository.findById(subcategoryRef.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Subcategory with id " + subcategoryRef.getId() + " not found"));
+
+        customUserDetailsService.checkAccessToResource(subcategory.getRestaurantId());
+        return subcategory;
     }
 }

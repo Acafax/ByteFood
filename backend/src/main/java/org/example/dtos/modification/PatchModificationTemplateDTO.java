@@ -1,5 +1,6 @@
 package org.example.dtos.modification;
 
+import jakarta.validation.Valid;
 import org.example.models.Subcategory;
 import org.example.util.annotation.AtLeastOneNotNull;
 import org.example.util.annotation.NullOrValid;
@@ -14,7 +15,7 @@ public record PatchModificationTemplateDTO(
         @NullOrValid
         BigDecimal price,
 
-        @NullOrValid
+        @Valid
         Subcategory subcategory,
 
         @NullOrValid

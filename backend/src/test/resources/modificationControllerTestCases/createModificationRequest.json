@@ -1,8 +1,7 @@
 {
   "name": "Testowa modyfikacja",
   "price": "5.00",
-  "category": "BURGER",
+  "subcategory": { "id": 1 },
   "semiProductId": 1
 }
-
 

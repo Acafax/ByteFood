@@ -1,23 +1,16 @@
 package org.example.builders;
 
-import org.springframework.stereotype.Component;
-
 import java.math.BigDecimal;
 import java.util.Map;
 
 
 public class ModificationTestBuilder {
 
-    private Long id =1L;
-
     private String name = "Modification";
 
     private BigDecimal price = new BigDecimal("10");
 
-    private String category= "BUGER";
-
-    private Long restaurantId= 1L;
-
+    private Long subcategoryId = 1L;
 
     public ModificationTestBuilder withName(String name) {
         this.name = name;
@@ -29,13 +22,8 @@ public class ModificationTestBuilder {
         return this;
     }
 
-    public ModificationTestBuilder withCategory(String category) {
-        this.category = category;
-        return this;
-    }
-
-    public ModificationTestBuilder withRestaurantId(Long restaurantId) {
-        this.restaurantId = restaurantId;
+    public ModificationTestBuilder withSubcategoryId(Long subcategoryId) {
+        this.subcategoryId = subcategoryId;
         return this;
     }
 
@@ -43,8 +31,7 @@ public class ModificationTestBuilder {
         return Map.of(
                 "name", name,
                 "price", price,
-                "category", category,
-                "restaurantId", restaurantId
+                "subcategory", Map.of("id", subcategoryId)
         );
     }
 }

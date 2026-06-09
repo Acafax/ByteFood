@@ -102,7 +102,7 @@ public class ModificationTest extends IntegrationTestBase {
             .then()
                     .statusCode(200)
                     .body("name", equalTo("Dodatkowy ser Cheddar"))
-                    .body("category", equalTo("BURGER"));
+                    .body("subcategory.subcategoryName", equalTo("cheeses"));
         }
 
         @Test
@@ -185,7 +185,7 @@ public class ModificationTest extends IntegrationTestBase {
                     .log().all()
                     .statusCode(201)
                     .body("name", equalTo("Testowa modyfikacja"))
-                    .body("category", equalTo("BURGER"))
+                    .body("subcategory.subcategoryName", equalTo("buns"))
                     .body("price", equalTo(5.0f));
         }
 
@@ -205,7 +205,7 @@ public class ModificationTest extends IntegrationTestBase {
                     .log().all()
                     .statusCode(201)
                     .body("name", equalTo("Testowa modyfikacja"))
-                    .body("category", equalTo("BURGER"))
+                    .body("subcategory.subcategoryName", equalTo("buns"))
                     .body("price", equalTo(5.0f));
         }
 
@@ -322,7 +322,7 @@ public class ModificationTest extends IntegrationTestBase {
             .then()
                     .statusCode(200)
                     .body("name", is("Zmieniona nazwa modyfikacji"))
-                    .body("category", is("DRINK"))
+                    .body("subcategory.subcategoryName", is("drinks"))
                     .body("price", is(7.50f))
                     .body("semiProductId", is(10));
         }
@@ -340,7 +340,7 @@ public class ModificationTest extends IntegrationTestBase {
                     .then()
                     .statusCode(200)
                     .body("name", is("Dodatkowy ser Cheddar"))
-                    .body("category", is("BURGER"))
+                    .body("subcategory.subcategoryName", is("cheeses"))
                     .body("price", is(4.0f))
                     .body("semiProductId", is(11));
         }
@@ -511,7 +511,7 @@ public class ModificationTest extends IntegrationTestBase {
             .then()
                     .statusCode(200)
                     .body("name", equalTo("Dodatkowy ser Cheddar"))
-                    .body("category", equalTo("BURGER"));
+                    .body("subcategory.subcategoryName", equalTo("cheeses"));
 
             boolean deletedModification = modificationTemplateRepository.existsById(1L);
             Assertions.assertFalse(deletedModification, "Modification should be soft deleted");
@@ -527,7 +527,7 @@ public class ModificationTest extends IntegrationTestBase {
             .then()
                     .statusCode(200)
                     .body("name", equalTo("Dodatkowy bekon"))
-                    .body("category", equalTo("BURGER"));
+                    .body("subcategory.subcategoryName", equalTo("addons"));
 
             Boolean recordExistsInDb = (Boolean) entityManager.createNativeQuery(
                             "SELECT EXISTS (SELECT 1 FROM modification_template WHERE id = :id AND deleted_at IS NOT NULL)")
