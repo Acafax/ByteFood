@@ -57,7 +57,7 @@ class ComboTest extends IntegrationTestBase {
                     .when()
                     .get(COMBO_BASE_URL + "/{id}/details", 1L)
                     .then()
-                    .statusCode(409);
+                    .statusCode(401);
         }
 
         @Test
