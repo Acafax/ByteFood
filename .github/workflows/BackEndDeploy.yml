@@ -66,6 +66,16 @@ jobs:
         run: |
           echo "IMAGE_LOWER=${IMAGE_NAME,,}" >>${GITHUB_ENV}
 
+      - name: Create production SQL files from secrets
+        working-directory: ./backend
+        env:
+          CLEAN_SQL: ${{ secrets.TEST_CLEAN_SQL_B64 }}
+          DB_INIT_SQL: ${{ secrets.TEST_DB_INIT_SQL_B64 }}
+        run: |
+          mkdir -p src/main/resources/db
+          echo "$CLEAN_SQL" | base64 -d > src/main/resources/db/clean.sql
+          echo "$DB_INIT_SQL" | base64 -d > src/main/resources/db/db-init.sql
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
