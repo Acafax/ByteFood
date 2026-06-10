@@ -29,7 +29,7 @@ public class SqlScriptRunner {
     public void RunSqlAfterStartup(ApplicationReadyEvent event) {
         log.info("Application ready — running SQL init script");
         try (Connection connection = dataSource.getConnection()) {
-            Resource resource = resourceLoader.getResource("classpath:db-init.sql");
+            Resource resource = resourceLoader.getResource("classpath:/db/db-init.sql");
             ScriptUtils.executeSqlScript(connection, resource);
             log.info("SQL init script executed successfully");
         } catch (Exception e) {

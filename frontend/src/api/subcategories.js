@@ -2,13 +2,13 @@ import { get, post } from './client.js';
 
 /**
  * @typedef {Object} CreateSubcategoryDto
- * @property {string} subcategoryName - Nazwa nowej subkategorii (@NotBlank)
+ * @property {string} subcategoryName
  */
 
 /**
  * @typedef {Object} SubcategoryDto
  * @property {number} id
- * @property {string} subcategory_name - Nazwa subkategorii (snake_case z backendu)
+ * @property {string} subcategory_name
  * @property {number} restaurantId
  */
 
