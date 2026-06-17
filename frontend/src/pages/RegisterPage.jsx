@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useStore } from 'react-redux';
 import { useAuth } from '../hooks/useAuth.js';
 import { getPostAuthPath } from '../utils/getPostAuthPath.js';
+import { getAuthErrorMessage } from '../utils/authErrors.js';
 import { Mail, Lock, User } from 'lucide-react';
 import FormField from '../components/ui/FormField.jsx';
 import AlertMessage from '../components/ui/AlertMessage.jsx';
@@ -42,7 +43,7 @@ function RegisterPage() {
       await register(email, password, name, lastName);
       navigate(getPostAuthPath(store.getState().auth));
     } catch (err) {
-      setError(err.message || 'Rejestracja nie powiodła się. Spróbuj ponownie.');
+      setError(getAuthErrorMessage(err, 'Rejestracja nie powiodła się. Spróbuj ponownie.'));
     }
   };
 
