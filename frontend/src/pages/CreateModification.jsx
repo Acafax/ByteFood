@@ -3,7 +3,7 @@ import { Plus, Minus, Replace, Save } from 'lucide-react';
 import { useCreateModificationForm } from '../hooks/useCreateModificationForm.js';
 import { useSubcategories } from '../hooks/useSubcategories.js';
 import AlertMessage from '../components/ui/AlertMessage.jsx';
-import LoadingSpinner from '../components/ui/LoadingSpinner.jsx';
+import { FormCardSkeleton } from '../components/ui/Skeleton.jsx';
 import FormField from '../components/ui/FormField.jsx';
 import SubcategorySelectField from '../components/subcategory/SubcategorySelectField.jsx';
 import SubmitButton from '../components/ui/SubmitButton.jsx';
@@ -27,11 +27,7 @@ function CreateModification() {
   const { subcategories, isLoading: subcategoriesLoading } = useSubcategories();
 
   if (loading) {
-    return (
-      <div className="bg-white rounded-xl border border-gray-200 shadow-card p-8">
-        <LoadingSpinner text="Ładowanie półproduktów..." colorClass="text-orange-500" />
-      </div>
-    );
+    return <FormCardSkeleton fields={3} cards={6} />;
   }
 
   return (

@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useStore } from 'react-redux';
 import { useAuth } from '../hooks/useAuth.js';
 import { getPostAuthPath } from '../utils/getPostAuthPath.js';
+import { getAuthErrorMessage } from '../utils/authErrors.js';
 import { Mail, Lock } from 'lucide-react';
 import FormField from '../components/ui/FormField.jsx';
 import AlertMessage from '../components/ui/AlertMessage.jsx';
@@ -29,7 +30,7 @@ function LoginPage() {
       await login(email, password);
       navigate(getPostAuthPath(store.getState().auth));
     } catch (err) {
-      setError('Logowanie nie powiodło się. Spróbuj ponownie.');
+      setError(getAuthErrorMessage(err, 'Logowanie nie powiodło się. Spróbuj ponownie.'));
     }
   };
 

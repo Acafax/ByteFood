@@ -2,7 +2,7 @@ import React from 'react';
 import { Plus, Minus, Save } from 'lucide-react';
 import { useCreateComboForm } from '../hooks/useCreateComboForm.js';
 import AlertMessage from '../components/ui/AlertMessage.jsx';
-import LoadingSpinner from '../components/ui/LoadingSpinner.jsx';
+import { FormCardSkeleton } from '../components/ui/Skeleton.jsx';
 import FormField from '../components/ui/FormField.jsx';
 import SubmitButton from '../components/ui/SubmitButton.jsx';
 
@@ -22,11 +22,7 @@ function CreateCombo() {
   } = useCreateComboForm();
 
   if (loading) {
-    return (
-      <div className="bg-white rounded-xl border border-gray-200 shadow-card p-8">
-        <LoadingSpinner text="Ładowanie produktów..." colorClass="text-orange-500" />
-      </div>
-    );
+    return <FormCardSkeleton fields={2} cards={6} />;
   }
 
   return (
