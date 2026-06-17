@@ -1,4 +1,5 @@
-import React, { useRef, useCallback } from 'react';
+import React, { useRef, useState, useCallback } from 'react';
+import { Eye, EyeOff } from 'lucide-react';
 import FieldTooltip from './FieldTooltip';
 
 const INPUT_BASE =
@@ -90,9 +91,30 @@ function NumberSpinner({ inputRef }) {
   );
 }
 
+function PasswordToggle({ visible, onToggle }) {
+  return (
+    <button
+      type="button"
+      onClick={onToggle}
+      tabIndex={-1}
+      aria-label={visible ? 'Ukryj hasło' : 'Pokaż hasło'}
+      title={visible ? 'Ukryj hasło' : 'Pokaż hasło'}
+      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+    >
+      {visible ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+    </button>
+  );
+}
+
 function FormField({ label, helpText ,required, icon: Icon, ...inputProps }) {
   const numberRef = useRef(null);
   const isNumber = inputProps.type === 'number';
+  const isPassword = inputProps.type === 'password';
+  const [showPassword, setShowPassword] = useState(false);
+
+  const { type, className: inputClassName, ...restInputProps } = inputProps;
+  const effectiveType = isPassword && showPassword ? 'text' : type;
+  const togglePassword = useCallback(() => setShowPassword((prev) => !prev), []);
 
   return (
     <div>
@@ -109,28 +131,42 @@ function FormField({ label, helpText ,required, icon: Icon, ...inputProps }) {
         <div className="relative">
           <Icon className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
           <input
-            {...inputProps}
+            {...restInputProps}
+            type={effectiveType}
             ref={isNumber ? numberRef : undefined}
             required={required}
-            className={`${INPUT_BASE} pl-10 ${isNumber ? 'pr-10' : 'pr-4'} ${inputProps.className || ''}`}
+            className={`${INPUT_BASE} pl-10 ${isNumber || isPassword ? 'pr-10' : 'pr-4'} ${inputClassName || ''}`}
           />
           {isNumber && <NumberSpinner inputRef={numberRef} />}
+          {isPassword && <PasswordToggle visible={showPassword} onToggle={togglePassword} />}
         </div>
       ) : isNumber ? (
         <div className="number-field-wrapper">
           <input
-            {...inputProps}
+            {...restInputProps}
+            type={effectiveType}
             ref={numberRef}
             required={required}
-            className={`${INPUT_BASE} px-4 pr-10 ${inputProps.className || ''}`}
+            className={`${INPUT_BASE} px-4 pr-10 ${inputClassName || ''}`}
           />
           <NumberSpinner inputRef={numberRef} />
         </div>
+      ) : isPassword ? (
+        <div className="relative">
+          <input
+            {...restInputProps}
+            type={effectiveType}
+            required={required}
+            className={`${INPUT_BASE} pl-4 pr-10 ${inputClassName || ''}`}
+          />
+          <PasswordToggle visible={showPassword} onToggle={togglePassword} />
+        </div>
       ) : (
         <input
-          {...inputProps}
+          {...restInputProps}
+          type={effectiveType}
           required={required}
-          className={`${INPUT_BASE} px-4 ${inputProps.className || ''}`}
+          className={`${INPUT_BASE} px-4 ${inputClassName || ''}`}
         />
       )}
     </div>
