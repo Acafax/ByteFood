@@ -3,9 +3,9 @@ import { Plus, Minus, Save } from 'lucide-react';
 import { useCreateProductForm } from '../hooks/useCreateProductForm.js';
 import { useCategories } from '../hooks/useCategories.js';
 import AlertMessage from '../components/ui/AlertMessage.jsx';
-import LoadingSpinner from '../components/ui/LoadingSpinner.jsx';
+import { FormCardSkeleton } from '../components/ui/Skeleton.jsx';
 import FormField from '../components/ui/FormField.jsx';
-import SelectField from '../components/ui/SelectField.jsx';
+import CategorySelectField from '../components/category/CategorySelectField.jsx';
 import ImageUploadField from '../components/ui/ImageUploadField.jsx';
 import SubmitButton from '../components/ui/SubmitButton.jsx';
 
@@ -31,14 +31,10 @@ function CreateProduct() {
     resetForm,
   } = useCreateProductForm();
 
-  const { categories } = useCategories();
+  const { categories, isLoading: categoriesLoading } = useCategories();
 
   if (loading) {
-    return (
-      <div className="bg-white rounded-xl border border-gray-200 shadow-card p-8">
-        <LoadingSpinner text="Ładowanie półproduktów..." colorClass="text-orange-500" />
-      </div>
-    );
+    return <FormCardSkeleton fields={3} cards={6} />;
   }
 
   return (
@@ -76,15 +72,11 @@ function CreateProduct() {
               placeholder="np. Pizza Margherita"
             />
 
-            <SelectField
-              label="Kategoria"
-              required
-              id="category"
-              name="category"
+            <CategorySelectField
               value={formData.category}
               onChange={handleInputChange}
               options={categories}
-              placeholder="Wybierz kategorię"
+              loading={categoriesLoading}
             />
 
             <FormField
