@@ -4,6 +4,7 @@ import { useCreateSemiProductForm } from '../hooks/useCreateSemiProductForm.js';
 import { useUnits } from '../hooks/useUnits.js';
 import { useSubcategories } from '../hooks/useSubcategories.js';
 import AlertMessage from '../components/ui/AlertMessage.jsx';
+import { FormCardSkeleton } from '../components/ui/Skeleton.jsx';
 import FormField from '../components/ui/FormField.jsx';
 import SelectField from '../components/ui/SelectField.jsx';
 import SubcategorySelectField from '../components/subcategory/SubcategorySelectField.jsx';
@@ -20,8 +21,12 @@ function CreateSemiProduct() {
     resetForm,
   } = useCreateSemiProductForm();
 
-  const { units } = useUnits();
+  const { units, isLoading: unitsLoading } = useUnits();
   const { subcategories, isLoading: subcategoriesLoading } = useSubcategories();
+
+  if (unitsLoading || subcategoriesLoading) {
+    return <FormCardSkeleton fields={4} cards={3} />;
+  }
 
   return (
     <div className="bg-white rounded-xl border border-gray-200 shadow-card p-8">

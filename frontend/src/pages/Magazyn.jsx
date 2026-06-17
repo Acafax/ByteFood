@@ -2,7 +2,7 @@ import React from 'react';
 import { Package, AlertTriangle, CheckCircle, FileDown } from 'lucide-react';
 import { useStock } from '../hooks/useStock.js';
 import { generateInventoryReport } from '../utils/pdfReport.js';
-import LoadingSpinner from '../components/ui/LoadingSpinner.jsx';
+import { StockTableSkeleton } from '../components/ui/Skeleton.jsx';
 import AlertMessage from '../components/ui/AlertMessage.jsx';
 
 /**
@@ -21,7 +21,7 @@ function Magazyn() {
   const { stock, isLoading, isError, error } = useStock();
 
   if (isLoading) {
-    return <LoadingSpinner text="Ładowanie danych magazynowych..." colorClass="text-orange-500" />;
+    return <StockTableSkeleton rows={6} />;
   }
 
   if (isError) {
