@@ -50,15 +50,25 @@ const apiClient = async (endpoint, options = {}) => {
     const data = isJson ? await response.json() : await response.text();
 
     if (!response.ok) {
-      if (response.status === 401) {
-        setToken(null);
-        const error = new Error(data.message || 'Authentication failed. Please log in again.');
-        error.status = 401;
-        error.data = data;
-        throw error;
-      }
-
-      const error = new Error(data.message || data.error || `HTTP error! status: ${response.status}`);
+      // NOTE: Do NOT clear the token here. Previously every 401 from any
+      // endpoint silently wiped the JWT, which left the app in an inconsistent
+      // state (token gone, Redux still "authenticated") and bounced the user to
+      // the login page on the next navigation/reload — losing their work. This
+      // was the root cause of the "logout when adding a new subcategory" bug:
+      // a single failed write request destroyed the whole session.
+      //
+      // The session lifecycle is owned exclusively by the auth slice
+      // (login/register/logout and the fetchCurrentUser bootstrap), which
+      // validates the token and clears storage when it is genuinely invalid.
+      // Here we only surface the error so the caller can handle it in context.
+      const isAuthError = response.status === 401;
+      const error = new Error(
+        (data && data.message)
+        || (data && data.error)
+        || (isAuthError
+          ? 'Authentication failed. Please log in again.'
+          : `HTTP error! status: ${response.status}`),
+      );
       error.status = response.status;
       error.data = data;
       throw error;
